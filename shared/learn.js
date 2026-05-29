@@ -33,9 +33,12 @@
   }
 
   // --- Header + mode toggle ------------------------------------------------
-  var header = el("header", { class: "hunt-header" }, [
+  var header = el("header", { class: "hunt-header learn-header" }, [
     el("h1", {}, [data.title]),
     el("p", {}, [data.subtitle || ""]),
+    el("p", { class: "learn-stats" }, [
+      data.artists.length + " artists · " + allWorks.length + " masterpieces",
+    ]),
   ]);
   var btnStudy = el("button", { class: "mode-btn", type: "button" }, ["📚 Study"]);
   var btnQuiz = el("button", { class: "mode-btn", type: "button" }, ["❓ Guess the Artist"]);
@@ -60,28 +63,29 @@
   function renderGallery() {
     data.artists.forEach(function (a) {
       var section = el("section", { class: "artist-section" });
+      section.style.setProperty("--artist", a.color || "#457b9d");
+
       section.appendChild(
         el("div", { class: "artist-head" }, [
           el("span", { class: "face" }, [a.face || "🎨"]),
-          el("div", {}, [
+          el("div", { class: "artist-meta" }, [
             el("h2", {}, [a.name]),
             el("p", {}, [a.fact || ""]),
           ]),
+          el("span", { class: "work-count" }, [String(a.works.length)]),
         ])
       );
 
       var grid = el("div", { class: "gallery-grid" });
       a.works.forEach(function (w) {
-        var card = el("div", { class: "card" });
+        var card = el("div", { class: "card study-card" });
         card.appendChild(CYS.artTile(w));
-        var body = el("div", { class: "body" }, [
-          el("h2", {}, [w.title]),
-          el("p", { class: "fact" }, [w.fact || ""]),
-        ]);
-        card.appendChild(body);
-        card.addEventListener("click", function () {
-          card.classList.toggle("show-fact");
-        });
+        card.appendChild(
+          el("div", { class: "body" }, [
+            el("h3", { class: "work-title" }, [w.title]),
+            el("p", { class: "fact" }, [w.fact || ""]),
+          ])
+        );
         grid.appendChild(card);
       });
       section.appendChild(grid);
