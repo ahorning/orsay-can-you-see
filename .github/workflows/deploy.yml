@@ -27,8 +27,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Fetch public-domain painting photos
-        shell: bash
-        run: bash build/fetch-images.sh || true
+        run: python3 build/fetch-images.py
       - name: Build offline bundles + PWA assets
         run: python3 build/inline.py
       - uses: actions/configure-pages@v5

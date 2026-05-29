@@ -146,7 +146,7 @@ def build() -> None:
     print(f"\nReal photos inlined: {have} / {len(ids)} artworks "
           f"(placeholders used for the rest)")
     if have < len(ids):
-        print("Tip: run build/fetch-images.sh on a normal connection, then rebuild.")
+        print("Tip: run build/fetch-images.py on a normal connection, then rebuild.")
 
 
 if __name__ == "__main__":
