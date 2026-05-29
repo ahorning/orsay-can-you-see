@@ -45,6 +45,12 @@
     .soon { opacity: 0.5; }
     footer { padding: 20px; font-size: 0.85rem; color: #6d6875; }
   </style>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Can You See?" />
+  <meta name="mobile-web-app-capable" content="yes" />
 </head>
 <body>
   <header>
@@ -73,5 +79,12 @@
   </div>
 
   <footer>Made with love for one very precocious art detective.</footer>
+  <script>
+    if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('sw.js').catch(function () {});
+      });
+    }
+  </script>
 </body>
 </html>

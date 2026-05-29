@@ -20,12 +20,40 @@ emoji placeholder, so the files always build and work.
 import base64
 import mimetypes
 import re
+import shutil
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 ORSAY = ROOT / "museums" / "orsay"
 IMAGES = ORSAY / "images"
+PWA = ROOT / "pwa"
 DIST = ROOT / "dist"
+
+# Injected into each bundled page so the deployed site is an installable,
+# offline PWA. Paths are relative because the dist files sit flat at the site
+# root. Harmless for the local-file use: the manifest/icons just 404 and the
+# service-worker registration is guarded to no-op on file://.
+PWA_HEAD = """  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Can You See?" />
+  <meta name="mobile-web-app-capable" content="yes" />
+"""
+PWA_BODY = """  <script>
+    if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('sw.js').catch(function () {});
+      });
+    }
+  </script>
+"""
+
+
+def inject_pwa(html: str) -> str:
+    html = html.replace("</head>", PWA_HEAD + "</head>", 1)
+    html = html.replace("</body>", PWA_BODY + "</body>", 1)
+    return html
 
 # Each page to bundle: source html -> output filename in dist/
 PAGES = {
@@ -80,6 +108,8 @@ def build_page(src: Path, out_name: str, images: dict) -> None:
     img_script = f"<script>\nwindow.ARTWORK_IMAGES = {{\n{img_json}\n}};\n</script>"
     html = html.replace("<script>", img_script + "\n  <script>", 1)
 
+    html = inject_pwa(html)
+
     out = DIST / out_name
     out.write_text(html, encoding="utf-8")
     print(f"✓ {out.relative_to(ROOT)}  ({out.stat().st_size / 1024:.0f} KB)")
@@ -89,8 +119,17 @@ def build_index() -> None:
     """Landing page with links pointing at the bundled siblings in dist/."""
     html = read(ROOT / "index.html")
     html = html.replace("museums/orsay/", "")  # learn.html / orsay.html sit alongside
+    html = inject_pwa(html)
     (DIST / "index.html").write_text(html, encoding="utf-8")
     print(f"✓ {(DIST / 'index.html').relative_to(ROOT)}")
+
+
+def copy_pwa_assets() -> None:
+    """Drop the manifest, service worker and icons alongside the bundles."""
+    shutil.copy2(PWA / "manifest.webmanifest", DIST / "manifest.webmanifest")
+    shutil.copy2(PWA / "sw.js", DIST / "sw.js")
+    shutil.copytree(PWA / "icons", DIST / "icons", dirs_exist_ok=True)
+    print("✓ dist/manifest.webmanifest, dist/sw.js, dist/icons/")
 
 
 def build() -> None:
@@ -99,6 +138,7 @@ def build() -> None:
     for src, out_name in PAGES.items():
         build_page(src, out_name, images)
     build_index()
+    copy_pwa_assets()
 
     have = len(images)
     ids = set(re.findall(r'id:\s*"([^"]+)"', read(ORSAY / "data.js")))
