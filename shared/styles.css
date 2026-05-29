@@ -1,0 +1,205 @@
+/* "Can You See?" — kid-friendly scavenger-hunt styling.
+   Mobile-first: big tap targets, bright colours, readable for a grown-up
+   reading aloud to a 4-year-old. */
+
+:root {
+  --bg: #fff8f0;
+  --ink: #2b2118;
+  --accent: #e63946;
+  --accent-2: #457b9d;
+  --gold: #c9a227;
+  --card-radius: 18px;
+  --shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Trebuchet MS", "Comic Sans MS", "Segoe UI", system-ui, sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+
+header.hunt-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: linear-gradient(135deg, var(--accent), var(--gold));
+  color: #fff;
+  padding: 14px 16px;
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+header.hunt-header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  letter-spacing: 0.5px;
+}
+header.hunt-header p { margin: 4px 0 0; font-size: 0.95rem; opacity: 0.95; }
+
+/* Progress bar of stars */
+.progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  justify-content: center;
+}
+.progress .bar {
+  flex: 1;
+  max-width: 240px;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.progress .bar > span {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: #fff;
+  border-radius: 99px;
+  transition: width 0.4s ease;
+}
+.progress .count { font-weight: bold; white-space: nowrap; font-size: 0.95rem; }
+
+/* Card grid */
+main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 16px 12px 90px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+@media (max-width: 380px) {
+  main { grid-template-columns: 1fr; }
+}
+
+.card {
+  background: #fff;
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  cursor: pointer;
+  border: 4px solid transparent;
+  transition: transform 0.12s ease, border-color 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  display: flex;
+  flex-direction: column;
+}
+.card:active { transform: scale(0.97); }
+.card.found { border-color: #2a9d8f; }
+
+.card .art {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.card .art img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.card .placeholder-icon { font-size: 3.2rem; }
+
+/* The green check + star that appears when found */
+.card .stamp {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  background: rgba(42, 157, 143, 0.45);
+  opacity: 0;
+  transform: scale(0.4) rotate(-20deg);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.card.found .stamp { opacity: 1; transform: scale(1) rotate(-8deg); }
+
+.card .body { padding: 10px 12px 14px; }
+.card .body h2 { margin: 0 0 4px; font-size: 1.1rem; }
+.card .body .find { margin: 0 0 8px; font-size: 0.95rem; }
+.card .body .where { margin: 0; font-size: 0.82rem; color: #6d6875; font-style: italic; }
+
+/* Fun fact toggle */
+.card .fact {
+  margin: 8px 0 0;
+  font-size: 0.85rem;
+  background: #fff8f0;
+  border-radius: 10px;
+  padding: 8px 10px;
+  display: none;
+}
+.card.show-fact .fact { display: block; }
+.card .fact-btn {
+  margin-top: 8px;
+  background: var(--accent-2);
+  color: #fff;
+  border: none;
+  border-radius: 99px;
+  padding: 6px 12px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* Narration button — hidden until enabled later (Web Speech API seam) */
+.card .speak-btn {
+  display: none; /* flip via HUNT_CONFIG.narration */
+  margin-top: 8px;
+  margin-left: 6px;
+  background: var(--gold);
+  color: #fff;
+  border: none;
+  border-radius: 99px;
+  padding: 6px 12px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+body.narration .card .speak-btn { display: inline-block; }
+
+/* Footer with reset + win message */
+.footer-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: #fff;
+  box-shadow: 0 -4px 14px rgba(0,0,0,0.1);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.footer-bar .win { font-weight: bold; color: var(--accent); }
+.reset-btn {
+  background: #eee;
+  border: none;
+  border-radius: 99px;
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* Confetti */
+.confetti {
+  position: fixed;
+  top: -10px;
+  width: 10px; height: 14px;
+  z-index: 100;
+  pointer-events: none;
+  animation: fall 1.6s linear forwards;
+}
+@keyframes fall {
+  to { transform: translateY(105vh) rotate(540deg); opacity: 0; }
+}
