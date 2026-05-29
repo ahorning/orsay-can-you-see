@@ -95,7 +95,7 @@ main {
 .card:active { transform: scale(0.97); }
 .card.found { border-color: #2a9d8f; }
 
-.card .art {
+.art {
   position: relative;
   width: 100%;
   aspect-ratio: 1 / 1;
@@ -105,10 +105,10 @@ main {
   align-items: center;
   justify-content: center;
 }
-.card .art img {
+.art img {
   width: 100%; height: 100%; object-fit: cover; display: block;
 }
-.card .placeholder-icon { font-size: 3.2rem; }
+.placeholder-icon { font-size: 3.2rem; }
 
 /* The green check + star that appears when found */
 .card .stamp {
