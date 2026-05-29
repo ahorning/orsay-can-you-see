@@ -5,10 +5,16 @@ and the sculpture are in the public domain** (the artists died well over 100
 years ago). Faithful photographic reproductions of public-domain 2-D artworks
 are also public domain (Wikimedia's *PD-Art* policy), so they're free to reuse.
 
-Images are **not committed empty** by default — run `build/fetch-images.sh` on a
-normal internet connection to download them into this folder, then rebuild with
+Images are downloaded by running `build/fetch-images.py` on a normal internet
+connection (CI does this automatically on deploy), then rebuilding with
 `python3 build/inline.py`. Until then, each card shows a coloured emoji
 placeholder and the hunt works fine.
+
+Rather than relying on a single hard-coded Commons filename per artwork (which
+silently dropped paintings to placeholders whenever a name was off),
+`fetch-images.py` tries the verified Orsay-specific Commons file **first** and
+then falls back to resolving the image by Wikipedia article title via the
+MediaWiki API. Edit the `ARTWORKS` map in that script to change a source.
 
 | id | Artwork | Artist | Used by | Notes |
 |----|---------|--------|---------|-------|
@@ -34,10 +40,10 @@ placeholder and the hunt works fine.
 | `apples-oranges` | Apples and Oranges | Paul Cézanne | learn | PD |
 | `sainte-victoire` | Mont Sainte-Victoire | Paul Cézanne | learn | PD |
 
-Source: Wikimedia Commons via `Special:FilePath` (see `build/fetch-images.sh`
-for the exact file names). If a download fails, open the artwork's Wikipedia
-page, copy the precise image file name, and update the script. All file names
-were last verified to resolve on 2026-05-29.
+Source: Wikipedia / Wikimedia Commons (see the `ARTWORKS` map in
+`build/fetch-images.py` for the exact Commons file and article title used per
+artwork). The Commons filenames were verified to resolve on 2026-05-29; if one
+ever breaks, the MediaWiki title fallback now covers it automatically.
 
 **Heads-up on the Gauguin file names.** On Commons, `Paul Gauguin 056.jpg` is
 *Tahitian Women on the Beach* — **not** *Arearea* (confirmed via each painting's

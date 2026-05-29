@@ -62,7 +62,7 @@ By default each card shows a friendly emoji placeholder. To use real
 public-domain photos of the artworks (so she can match the screen to the wall):
 
 ```bash
-bash build/fetch-images.sh     # downloads photos (needs a normal connection)
+python3 build/fetch-images.py  # downloads photos (needs a normal connection)
 python3 build/inline.py        # rebuild the single-file app
 ```
 
@@ -85,7 +85,7 @@ museums/orsay/learn.html   The "learn before we go" page
 museums/orsay/artists.js   ← edit this to change the artists/paintings
 museums/orsay/images/      Public-domain painting photos
 build/inline.py            Bundles everything into dist/*.html + PWA assets
-build/fetch-images.sh      Downloads the painting photos
+build/fetch-images.py      Downloads the painting photos (via Commons + the MediaWiki API)
 build/generate-icons.js    Generates the app icons (no dependencies)
 pwa/                       PWA manifest, service worker, icons
 .github/workflows/         CI that builds and deploys to GitHub Pages
