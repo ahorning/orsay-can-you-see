@@ -1,0 +1,47 @@
+name: Deploy to GitHub Pages
+
+# Builds the offline PWA and publishes dist/ to GitHub Pages.
+# The runner has internet, so it can download the real painting photos that
+# the local sandbox can't reach.
+#
+# One-time setup: in the repo, Settings → Pages → Build and deployment →
+# Source = "GitHub Actions".
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch public-domain painting photos
+        shell: bash
+        run: bash build/fetch-images.sh || true
+      - name: Build offline bundles + PWA assets
+        run: python3 build/inline.py
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

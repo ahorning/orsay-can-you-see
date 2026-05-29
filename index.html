@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#e63946" />
+  <title>Paris, Can You See?</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+      background: #fff8f0;
+      color: #2b2118;
+      text-align: center;
+    }
+    header {
+      background: linear-gradient(135deg, #e63946, #c9a227);
+      color: #fff;
+      padding: 28px 16px;
+    }
+    header h1 { margin: 0; font-size: 1.8rem; }
+    header p { margin: 8px 0 0; opacity: 0.95; }
+    .activities {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 20px 16px 40px;
+      display: grid;
+      gap: 16px;
+    }
+    a.activity {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+      padding: 20px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      transition: transform 0.12s ease;
+    }
+    a.activity:active { transform: scale(0.97); }
+    a.activity .emoji { font-size: 2.2rem; display: block; margin-bottom: 6px; }
+    a.activity small { display: block; font-weight: normal; color: #6d6875; margin-top: 6px; }
+    .soon { opacity: 0.5; }
+    footer { padding: 20px; font-size: 0.85rem; color: #6d6875; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Paris, Can You See? 🗼</h1>
+    <p>Fun art &amp; city adventures for little explorers</p>
+  </header>
+
+  <div class="activities">
+    <a class="activity" href="museums/orsay/learn.html">
+      <span class="emoji">🎨</span>
+      Learn Before We Go
+      <small>Meet the artists &amp; play guess-the-artist</small>
+    </a>
+
+    <a class="activity" href="museums/orsay/orsay.html">
+      <span class="emoji">🖼️</span>
+      Orsay, Can You See?
+      <small>A treasure hunt through the Musée d'Orsay</small>
+    </a>
+
+    <div class="activity soon">
+      <span class="emoji">🏛️</span>
+      More museums coming soon
+      <small>The Louvre, the Pompidou, and more…</small>
+    </div>
+  </div>
+
+  <footer>Made with love for one very precocious art detective.</footer>
+</body>
+</html>
