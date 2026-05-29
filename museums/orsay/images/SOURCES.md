@@ -34,9 +34,10 @@ MediaWiki API. Edit the `ARTWORKS` map in that script to change a source.
 | `girls-piano` | Young Girls at the Piano | Pierre-Auguste Renoir | learn | PD |
 | `swing` | The Swing (La Balançoire) | Pierre-Auguste Renoir | learn | PD |
 | `snake-charmer` | The Snake Charmer | Henri Rousseau | hunt | PD |
+| `white-cat` | Le Chat blanc (The White Cat) | Pierre Bonnard | hunt | PD — Bonnard died 1947, so PD since 2018. |
 | `arearea` | Arearea (Joyousness) | Paul Gauguin | both | PD |
 | `tahitian-women` | Tahitian Women on the Beach | Paul Gauguin | learn | PD |
-| `card-players` | The Card Players | Paul Cézanne | both | PD |
+| `card-players` | The Card Players | Paul Cézanne | learn | PD |
 | `apples-oranges` | Apples and Oranges | Paul Cézanne | learn | PD |
 | `sainte-victoire` | Mont Sainte-Victoire | Paul Cézanne | learn | PD |
 

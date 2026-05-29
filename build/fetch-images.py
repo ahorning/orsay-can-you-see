@@ -94,6 +94,10 @@ ARTWORKS = {
     "snake-charmer": [
         ("commons", "Henri Rousseau, known as le Douanier - The Snake Charmer - Google Art Project.jpg"),
         ("title", "en", "The Snake Charmer (Rousseau)")],
+    "white-cat": [
+        ("commons", "Le Chat blanc.jpg"),
+        ("commons", 'Pierre Bonnard , "Le Chat blanc", 1894.jpg'),
+        ("title", "fr", "Le Chat blanc")],
 }
 
 
