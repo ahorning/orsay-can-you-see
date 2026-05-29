@@ -92,7 +92,7 @@ ARTWORKS = {
         ("commons", "Paul Cézanne - Mont Sainte-Victoire - Google Art Project.jpg"),
         ("title", "en", "Mont Sainte-Victoire (Cézanne)")],
     "snake-charmer": [
-        ("commons", "Rousseau - La Charmeuse de serpents, en 1907, RF 1937 7.jpg"),
+        ("commons", "Henri Rousseau, known as le Douanier - The Snake Charmer - Google Art Project.jpg"),
         ("title", "en", "The Snake Charmer (Rousseau)")],
 }
 
