@@ -1,12 +1,15 @@
 /* Service worker for the "Can You See?" PWA.
  *
  * The bundled pages are self-contained (images are inlined), so the whole app
- * is offline once these few files are cached. Strategy: precache the app shell
- * on install; serve cache-first and stash any other same-origin GETs at runtime.
+ * is offline once these few files are cached. Strategy:
+ *   - page navigations: network-first (fresh content when online, e.g. updated
+ *     paintings), falling back to cache when offline — so a new deploy reaches
+ *     returning visitors instead of being masked by a stale cache.
+ *   - other assets: cache-first, stashing same-origin GETs at runtime.
  *
  * Bump CACHE when the app changes to roll out a fresh copy.
  */
-const CACHE = "cys-v1";
+const CACHE = "cys-v2";
 const SHELL = [
   "./",
   "index.html",
@@ -35,6 +38,24 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   const req = event.request;
   if (req.method !== "GET" || new URL(req.url).origin !== self.location.origin) return;
+
+  const isPage = req.mode === "navigate" || req.destination === "document";
+
+  if (isPage) {
+    // Network-first: get fresh pages when online, fall back to cache offline.
+    event.respondWith(
+      fetch(req).then((res) => {
+        if (res && res.ok) {
+          const copy = res.clone();
+          caches.open(CACHE).then((cache) => cache.put(req, copy));
+        }
+        return res;
+      }).catch(() => caches.match(req).then((hit) => hit || caches.match("index.html")))
+    );
+    return;
+  }
+
+  // Other assets: cache-first, stashing same-origin GETs at runtime.
   event.respondWith(
     caches.match(req).then((hit) => {
       if (hit) return hit;
