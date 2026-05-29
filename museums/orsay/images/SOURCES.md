@@ -36,4 +36,12 @@ placeholder and the hunt works fine.
 
 Source: Wikimedia Commons via `Special:FilePath` (see `build/fetch-images.sh`
 for the exact file names). If a download fails, open the artwork's Wikipedia
-page, copy the precise image file name, and update the script.
+page, copy the precise image file name, and update the script. All file names
+were last verified to resolve on 2026-05-29.
+
+**Heads-up on the Gauguin file names.** On Commons, `Paul Gauguin 056.jpg` is
+*Tahitian Women on the Beach* — **not** *Arearea* (confirmed via each painting's
+Wikidata item, property P18). `arearea` therefore uses
+`Paul Gauguin - Arearea - Google Art Project.jpg`. The two were swapped once,
+which silently showed the wrong painting on the Arearea card, so keep them
+straight if you edit the list.

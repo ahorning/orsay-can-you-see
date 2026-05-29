@@ -66,7 +66,10 @@ bash build/fetch-images.sh     # downloads photos (needs a normal connection)
 python3 build/inline.py        # rebuild the single-file app
 ```
 
-See `museums/orsay/images/SOURCES.md` for the artworks and licensing.
+This fills in real photos for every artwork (all the paintings plus the *Little
+Dancer* sculpture). One card — the giant station clock — stays an emoji on
+purpose: it's a modern photograph, not a public-domain artwork. See
+`museums/orsay/images/SOURCES.md` for the full list of artworks and licensing.
 
 ## Project layout
 

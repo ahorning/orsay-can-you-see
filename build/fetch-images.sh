@@ -24,14 +24,14 @@ mkdir -p "$DEST"
 # find a freely-licensed photo.
 declare -A FILES=(
   # Degas
-  [little-dancer]="Edgar Degas - The Little Fourteen Year Old Dancer - Google Art Project.jpg"
+  [little-dancer]="Degas - The Little Fourteen-Year-Old Dancer, 29.100.370, DP-14939-001.jpg"
   [ballet-class]="Edgar Degas - The Ballet Class - Google Art Project.jpg"
-  [racehorses]="Edgar Degas - Le Défilé, dit aussi Chevaux de course devant les tribunes.jpg"
+  [racehorses]="Edgar Germain Hilaire Degas 040.jpg"
   # Monet
   [poppies]="Claude Monet - Poppy Field - Google Art Project.jpg"
   [water-lilies]="Claude Monet - Blue Water Lilies - Google Art Project.jpg"
-  [gare-saint-lazare]="Claude Monet - La Gare Saint-Lazare.jpg"
-  [rouen-cathedral]="Claude Monet - Rouen Cathedral, Facade (sunset).jpg"
+  [gare-saint-lazare]="La Gare Saint-Lazare - Claude Monet.jpg"
+  [rouen-cathedral]="Claude Monet - Rouen Cathedral, Facade (Sunset).JPG"
   # Van Gogh
   [starry-rhone]="Starry Night Over the Rhone.jpg"
   [vangogh-selfportrait]="Vincent van Gogh - Self-Portrait - Google Art Project (454045).jpg"
@@ -41,15 +41,16 @@ declare -A FILES=(
   [moulin-galette]="Pierre-Auguste Renoir, Le Moulin de la Galette.jpg"
   [girls-piano]="Auguste Renoir - Young Girls at the Piano - Google Art Project.jpg"
   [swing]="Pierre-Auguste Renoir - La Balançoire.jpg"
-  # Gauguin
-  [arearea]="Paul Gauguin 056.jpg"
-  [tahitian-women]="Paul Gauguin - Tahitian Women on the Beach - Google Art Project.jpg"
+  # Gauguin  ("Paul Gauguin 056.jpg" is actually Tahitian Women on the Beach,
+  #           not Arearea — they were previously swapped.)
+  [arearea]="Paul Gauguin - Arearea - Google Art Project.jpg"
+  [tahitian-women]="Paul Gauguin 056.jpg"
   # Cézanne
-  [card-players]="Paul Cézanne - The Card Players - Google Art Project.jpg"
-  [apples-oranges]="Paul Cézanne - Apples and Oranges - Google Art Project.jpg"
+  [card-players]="Les Joueurs de cartes, par Paul Cézanne.jpg"
+  [apples-oranges]="Pommes et oranges, par Paul Cézanne, musée d'Orsay.jpg"
   [sainte-victoire]="Paul Cézanne - Mont Sainte-Victoire - Google Art Project.jpg"
   # Rousseau (hunt only)
-  [snake-charmer]="Henri Rousseau - The Snake Charmer.jpg"
+  [snake-charmer]="Rousseau - La Charmeuse de serpents, en 1907, RF 1937 7.jpg"
 )
 
 WIDTH=800
