@@ -1,16 +1,20 @@
 #!/usr/bin/env python3
-"""Bundle the Orsay hunt into one self-contained, offline-ready HTML file.
+"""Bundle the Orsay activities into self-contained, offline-ready HTML files.
 
-Reads museums/orsay/orsay.html and inlines:
+For each page (the learn page and the hunt) it inlines:
   - the shared stylesheet (<link rel="stylesheet">)
-  - data.js and shared/hunt.js (<script src>)
-  - any real painting photos in museums/orsay/images/ as base64 data URIs
+  - every <script src> (common.js, data.js/artists.js, the engine)
+  - all painting photos in museums/orsay/images/ as base64 data URIs
+
+It also writes a dist/index.html landing page whose links point at the
+bundled siblings.
 
 Run:  python3 build/inline.py
-Out:  dist/orsay.html   (open it on a phone — works fully offline)
+Out:  dist/index.html, dist/learn.html, dist/orsay.html
+      (open any on a phone — they work fully offline)
 
-Stdlib only, no dependencies. Missing photos are fine: those cards fall back
-to the coloured emoji placeholder, so the file always builds and works.
+Stdlib only. Missing photos are fine: those cards fall back to the coloured
+emoji placeholder, so the files always build and work.
 """
 
 import base64
@@ -21,7 +25,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 ORSAY = ROOT / "museums" / "orsay"
 IMAGES = ORSAY / "images"
-OUT = ROOT / "dist" / "orsay.html"
+DIST = ROOT / "dist"
+
+# Each page to bundle: source html -> output filename in dist/
+PAGES = {
+    ORSAY / "learn.html": "learn.html",
+    ORSAY / "orsay.html": "orsay.html",
+}
 
 IMG_EXTS = (".jpg", ".jpeg", ".png", ".webp", ".gif")
 
@@ -37,20 +47,19 @@ def data_uri(path: Path) -> str:
 
 
 def collect_images() -> dict:
-    """Map item id -> data URI for any real photo present in images/."""
+    """Map item id (filename stem) -> data URI for any real photo present."""
     images = {}
-    if not IMAGES.exists():
-        return images
-    for f in sorted(IMAGES.iterdir()):
-        if f.suffix.lower() in IMG_EXTS:
-            images[f.stem] = data_uri(f)
+    if IMAGES.exists():
+        for f in sorted(IMAGES.iterdir()):
+            if f.suffix.lower() in IMG_EXTS:
+                images[f.stem] = data_uri(f)
     return images
 
 
-def build() -> None:
-    html = read(ORSAY / "orsay.html")
+def build_page(src: Path, out_name: str, images: dict) -> None:
+    html = read(src)
 
-    # 1. Inline the stylesheet: <link rel="stylesheet" href="../../shared/styles.css" />
+    # 1. Inline the stylesheet.
     css = read(ROOT / "shared" / "styles.css")
     html = re.sub(
         r'<link[^>]*rel="stylesheet"[^>]*>',
@@ -59,35 +68,45 @@ def build() -> None:
         count=1,
     )
 
-    # 2. Inline the image map, then the scripts (data.js then hunt.js).
-    images = collect_images()
-    img_json = ",\n".join(
-        f'    "{k}": "{v}"' for k, v in images.items()
-    )
-    img_script = f"<script>\nwindow.HUNT_IMAGES = {{\n{img_json}\n}};\n</script>"
-
+    # 2. Inline every <script src="..."></script> relative to the page.
     def inline_script(match: re.Match) -> str:
-        src = match.group(1)
-        # Resolve relative to the orsay.html location.
-        script_path = (ORSAY / src).resolve()
-        js = read(script_path)
+        js = read((src.parent / match.group(1)).resolve())
         return f"<script>\n{js}\n</script>"
 
     html = re.sub(r'<script\s+src="([^"]+)"\s*></script>', inline_script, html)
 
-    # Drop the image map in just before the first inlined script block.
+    # 3. Inject the base64 image map just before the first script block.
+    img_json = ",\n".join(f'    "{k}": "{v}"' for k, v in images.items())
+    img_script = f"<script>\nwindow.ARTWORK_IMAGES = {{\n{img_json}\n}};\n</script>"
     html = html.replace("<script>", img_script + "\n  <script>", 1)
 
-    OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(html, encoding="utf-8")
+    out = DIST / out_name
+    out.write_text(html, encoding="utf-8")
+    print(f"✓ {out.relative_to(ROOT)}  ({out.stat().st_size / 1024:.0f} KB)")
 
-    size_kb = OUT.stat().st_size / 1024
+
+def build_index() -> None:
+    """Landing page with links pointing at the bundled siblings in dist/."""
+    html = read(ROOT / "index.html")
+    html = html.replace("museums/orsay/", "")  # learn.html / orsay.html sit alongside
+    (DIST / "index.html").write_text(html, encoding="utf-8")
+    print(f"✓ {(DIST / 'index.html').relative_to(ROOT)}")
+
+
+def build() -> None:
+    DIST.mkdir(parents=True, exist_ok=True)
+    images = collect_images()
+    for src, out_name in PAGES.items():
+        build_page(src, out_name, images)
+    build_index()
+
     have = len(images)
-    total = len(re.findall(r'id:\s*"', read(ORSAY / "data.js")))
-    print(f"✓ Wrote {OUT.relative_to(ROOT)}  ({size_kb:.0f} KB)")
-    print(f"  Real photos inlined: {have} (placeholders used for the rest)")
-    if have < total:
-        print("  Tip: run build/fetch-images.sh on a normal connection, then rebuild.")
+    ids = set(re.findall(r'id:\s*"([^"]+)"', read(ORSAY / "data.js")))
+    ids |= set(re.findall(r'id:\s*"([^"]+)"', read(ORSAY / "artists.js")))
+    print(f"\nReal photos inlined: {have} / {len(ids)} artworks "
+          f"(placeholders used for the rest)")
+    if have < len(ids):
+        print("Tip: run build/fetch-images.sh on a normal connection, then rebuild.")
 
 
 if __name__ == "__main__":

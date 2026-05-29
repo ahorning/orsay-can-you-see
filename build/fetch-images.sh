@@ -23,17 +23,33 @@ mkdir -p "$DEST"
 # copyrighted, so that card uses the emoji placeholder. Add one yourself if you
 # find a freely-licensed photo.
 declare -A FILES=(
+  # Degas
   [little-dancer]="Edgar Degas - The Little Fourteen Year Old Dancer - Google Art Project.jpg"
   [ballet-class]="Edgar Degas - The Ballet Class - Google Art Project.jpg"
+  [racehorses]="Edgar Degas - Le Défilé, dit aussi Chevaux de course devant les tribunes.jpg"
+  # Monet
   [poppies]="Claude Monet - Poppy Field - Google Art Project.jpg"
   [water-lilies]="Claude Monet - Blue Water Lilies - Google Art Project.jpg"
+  [gare-saint-lazare]="Claude Monet - La Gare Saint-Lazare.jpg"
+  [rouen-cathedral]="Claude Monet - Rouen Cathedral, Facade (sunset).jpg"
+  # Van Gogh
   [starry-rhone]="Starry Night Over the Rhone.jpg"
   [vangogh-selfportrait]="Vincent van Gogh - Self-Portrait - Google Art Project (454045).jpg"
   [bedroom-arles]="Vincent van Gogh - De slaapkamer - Google Art Project.jpg"
+  [church-auvers]="Vincent van Gogh - The Church in Auvers-sur-Oise, View from the Chevet - Google Art Project.jpg"
+  # Renoir
   [moulin-galette]="Pierre-Auguste Renoir, Le Moulin de la Galette.jpg"
-  [snake-charmer]="Henri Rousseau - The Snake Charmer.jpg"
+  [girls-piano]="Auguste Renoir - Young Girls at the Piano - Google Art Project.jpg"
+  [swing]="Pierre-Auguste Renoir - La Balançoire.jpg"
+  # Gauguin
   [arearea]="Paul Gauguin 056.jpg"
+  [tahitian-women]="Paul Gauguin - Tahitian Women on the Beach - Google Art Project.jpg"
+  # Cézanne
   [card-players]="Paul Cézanne - The Card Players - Google Art Project.jpg"
+  [apples-oranges]="Paul Cézanne - Apples and Oranges - Google Art Project.jpg"
+  [sainte-victoire]="Paul Cézanne - Mont Sainte-Victoire - Google Art Project.jpg"
+  # Rousseau (hunt only)
+  [snake-charmer]="Henri Rousseau - The Snake Charmer.jpg"
 )
 
 WIDTH=800

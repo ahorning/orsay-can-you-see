@@ -8,14 +8,22 @@ the giant station clock!), taps a card when she spots it on the wall, and earns 
 star + confetti. Big tappable cards, bright colours, a "fun fact" for each
 artist, and a progress bar — all designed to be read aloud to a 4-year-old.
 
+There are two activities so far:
+
+- **🎨 Learn Before We Go** — a study gallery grouped by artist, plus a
+  *guess-the-artist* quiz to play at home before the trip, so the paintings feel
+  like old friends by the time you arrive.
+- **🖼️ Orsay, Can You See?** — the in-museum scavenger hunt.
+
 ## Use it on your phone (works fully offline)
 
 The museum's wifi and cell signal are unreliable, so the hunt is packaged as one
 self-contained file that needs **no internet** once it's on your phone.
 
-1. Get **`dist/orsay.html`** onto your phone (AirDrop it, email it to yourself,
-   or save it to the Files app).
-2. Open it in your browser. Add it to your home screen for one-tap access.
+1. Get the files in **`dist/`** onto your phone (AirDrop them, email them to
+   yourself, or save them to the Files app). `dist/index.html` links to both
+   activities; `dist/learn.html` and `dist/orsay.html` also open on their own.
+2. Open one in your browser. Add it to your home screen for one-tap access.
 3. That's it — it works in airplane mode. Progress is saved automatically, and a
    **🔄 Start over** button lets her play again.
 
@@ -47,14 +55,18 @@ See `museums/orsay/images/SOURCES.md` for the artworks and licensing.
 
 ```
 index.html                 Landing page linking to each activity
-shared/styles.css          Kid-friendly styling (shared across museums)
+shared/common.js           Shared helpers (DOM, image fallback, confetti)
+shared/styles.css          Kid-friendly styling (shared across activities)
 shared/hunt.js             The scavenger-hunt engine (museum-agnostic)
+shared/learn.js            The learn engine (study gallery + quiz)
 museums/orsay/orsay.html   The Orsay hunt page
 museums/orsay/data.js      ← edit this to change the hunt content
+museums/orsay/learn.html   The "learn before we go" page
+museums/orsay/artists.js   ← edit this to change the artists/paintings
 museums/orsay/images/      Public-domain painting photos
-build/inline.py            Bundles everything into dist/orsay.html
+build/inline.py            Bundles everything into dist/*.html
 build/fetch-images.sh      Downloads the painting photos
-dist/orsay.html            The single-file, offline, phone-ready build
+dist/                      The single-file, offline, phone-ready builds
 ```
 
 ## Roadmap
