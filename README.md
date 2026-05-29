@@ -56,20 +56,21 @@ Change a clue, add an artwork, reorder items — then rebuild the offline file:
 python3 build/inline.py        # → dist/*.html (+ PWA manifest, sw, icons)
 ```
 
-### Add the real painting photos
+### The painting photos
 
-By default each card shows a friendly emoji placeholder. To use real
-public-domain photos of the artworks (so she can match the screen to the wall):
+The real public-domain photos are **committed in `museums/orsay/images/`**, so
+the build needs no internet and every deploy ships the full set of pictures (no
+"sometimes an emoji" from a flaky download). One card — the giant station clock
+— stays an emoji on purpose: it's a modern photograph, not a public-domain
+artwork. See `museums/orsay/images/SOURCES.md` for the full list and licensing.
+
+To refresh the photos or add new ones (after editing the artwork lists), run the
+downloader on a normal connection and rebuild, then commit the new images:
 
 ```bash
-python3 build/fetch-images.py  # downloads photos (needs a normal connection)
+python3 build/fetch-images.py  # refreshes museums/orsay/images/ (needs internet)
 python3 build/inline.py        # rebuild the single-file app
 ```
-
-This fills in real photos for every artwork (all the paintings plus the *Little
-Dancer* sculpture). One card — the giant station clock — stays an emoji on
-purpose: it's a modern photograph, not a public-domain artwork. See
-`museums/orsay/images/SOURCES.md` for the full list of artworks and licensing.
 
 ## Project layout
 

@@ -1,8 +1,11 @@
 name: Deploy to GitHub Pages
 
 # Builds the offline PWA and publishes dist/ to GitHub Pages.
-# The runner has internet, so it can download the real painting photos that
-# the local sandbox can't reach.
+#
+# The painting photos are committed under museums/orsay/images/, so the build
+# is deterministic and needs no network — every deploy ships the full set of
+# images (no more "sometimes an emoji" from a flaky live fetch). To refresh or
+# add photos, run build/fetch-images.py locally and commit the result.
 #
 # One-time setup: in the repo, Settings → Pages → Build and deployment →
 # Source = "GitHub Actions".
@@ -26,8 +29,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Fetch public-domain painting photos
-        run: python3 build/fetch-images.py
       - name: Build offline bundles + PWA assets
         run: python3 build/inline.py
       - uses: actions/configure-pages@v5

@@ -40,10 +40,15 @@ great memory for paintings) ahead of a family trip to Paris.
 - `museums/orsay/artists.js` — learn-page artists + works. Degas's work id is
   `racehorses` (not "blue-dancers").
 - `museums/orsay/images/SOURCES.md` — artwork licensing + the Gauguin note.
-- `build/fetch-images.py` — downloads photos. Each artwork has ordered resolvers:
-  a hand-verified Commons file FIRST, then a MediaWiki pageimages title fallback,
-  so one bad filename can't silently drop a card to its emoji. Stdlib only;
-  per-artwork failures never abort the build (returns 0). Needs real internet.
+- `museums/orsay/images/*.jpg` — **the painting photos are committed** (20 of
+  them). The build inlines these; deploys need no network and always ship every
+  picture. The clock stays emoji on purpose. `fetch-images.py` is now only for
+  refreshing/adding photos locally (then commit them).
+- `build/fetch-images.py` — refreshes the committed photos. Each artwork has
+  ordered resolvers: a hand-verified Commons file FIRST, then a MediaWiki
+  pageimages title fallback, so one bad filename can't silently drop a card to
+  its emoji. Stdlib only; per-artwork failures never abort (returns 0). Needs
+  real internet — **not** run in CI anymore (the committed images are used).
 - `build/inline.py` — bundles pages into `dist/*.html` (inlines CSS/JS + base64
   images), injects PWA tags, copies PWA assets, writes `dist/index.html`.
 - `build/generate-icons.js` — dependency-free Node PNG encoder for app icons.
@@ -66,13 +71,13 @@ Pushing to `main` auto-builds and publishes via GitHub Actions.
 
 ## Working in THIS sandbox (important)
 - **No outbound network here.** External hosts are blocked (403 / "Host not in
-  allowlist"). `WebSearch` works; `WebFetch` and `curl` do not.
-- So you **cannot** run `fetch-images.py` or load the live site locally. The CI
-  runner (which has network) fetches the real images on deploy.
-- The committed `dist/*.html` (~8 MB each, with 20 base64 images) were built on a
-  networked machine. **Preserve them** — never regenerate locally (you'd wipe the
-  images). For CSS/JS changes, **patch the dist bundles in place** (e.g. Python
-  `str.replace`) and verify image count stays at 20.
+  allowlist"). `WebSearch` works; `WebFetch` and `curl` do not. So you can't run
+  `fetch-images.py` here — but you don't need to: the 20 photos are committed in
+  `museums/orsay/images/`, so `build/inline.py` works fully offline.
+- The committed `dist/*.html` (~8 MB each, 20 base64 images) match the committed
+  source images. For CSS/JS changes you can either rebuild with `inline.py`
+  (safe now that images are committed) or **patch the dist bundles in place**
+  (Python `str.replace`); either way verify the image count stays at 20.
 
 ## Conventions
 - Develop on branch `claude/paris-museum-activities-x1aJE`; never push straight to
