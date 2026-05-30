@@ -25,7 +25,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 ORSAY = ROOT / "museums" / "orsay"
-IMAGES = ORSAY / "images"
+PARIS = ROOT / "cities" / "paris"
+IMAGE_DIRS = [ORSAY / "images", PARIS / "images"]
 PWA = ROOT / "pwa"
 DIST = ROOT / "dist"
 
@@ -59,6 +60,7 @@ def inject_pwa(html: str) -> str:
 PAGES = {
     ORSAY / "learn.html": "learn.html",
     ORSAY / "orsay.html": "orsay.html",
+    PARIS / "paris.html": "paris.html",
 }
 
 IMG_EXTS = (".jpg", ".jpeg", ".png", ".webp", ".gif")
@@ -75,12 +77,14 @@ def data_uri(path: Path) -> str:
 
 
 def collect_images() -> dict:
-    """Map item id (filename stem) -> data URI for any real photo present."""
+    """Map item id (filename stem) -> data URI for any real photo present,
+    across every activity's images/ folder."""
     images = {}
-    if IMAGES.exists():
-        for f in sorted(IMAGES.iterdir()):
-            if f.suffix.lower() in IMG_EXTS:
-                images[f.stem] = data_uri(f)
+    for d in IMAGE_DIRS:
+        if d.exists():
+            for f in sorted(d.iterdir()):
+                if f.suffix.lower() in IMG_EXTS:
+                    images[f.stem] = data_uri(f)
     return images
 
 
@@ -103,8 +107,11 @@ def build_page(src: Path, out_name: str, images: dict) -> None:
 
     html = re.sub(r'<script\s+src="([^"]+)"\s*></script>', inline_script, html)
 
-    # 3. Inject the base64 image map just before the first script block.
-    img_json = ",\n".join(f'    "{k}": "{v}"' for k, v in images.items())
+    # 3. Inject only the images this page actually references (the ids in its
+    #    inlined data), so each bundle carries just its own photos — the Paris
+    #    hunt is all-emoji and ships none, instead of every painting.
+    used = {k: v for k, v in images.items() if f'"{k}"' in html}
+    img_json = ",\n".join(f'    "{k}": "{v}"' for k, v in used.items())
     img_script = f"<script>\nwindow.ARTWORK_IMAGES = {{\n{img_json}\n}};\n</script>"
     html = html.replace("<script>", img_script + "\n  <script>", 1)
 
@@ -112,13 +119,16 @@ def build_page(src: Path, out_name: str, images: dict) -> None:
 
     out = DIST / out_name
     out.write_text(html, encoding="utf-8")
-    print(f"✓ {out.relative_to(ROOT)}  ({out.stat().st_size / 1024:.0f} KB)")
+    print(f"✓ {out.relative_to(ROOT)}  ({out.stat().st_size / 1024:.0f} KB, "
+          f"{len(used)} photos)")
 
 
 def build_index() -> None:
     """Landing page with links pointing at the bundled siblings in dist/."""
     html = read(ROOT / "index.html")
-    html = html.replace("museums/orsay/", "")  # learn.html / orsay.html sit alongside
+    # The bundled pages sit flat in dist/, so flatten the source links.
+    html = html.replace("museums/orsay/", "")
+    html = html.replace("cities/paris/", "")
     html = inject_pwa(html)
     (DIST / "index.html").write_text(html, encoding="utf-8")
     print(f"✓ {(DIST / 'index.html').relative_to(ROOT)}")

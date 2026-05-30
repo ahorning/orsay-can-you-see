@@ -9,12 +9,13 @@
  *
  * Bump CACHE when the app changes to roll out a fresh copy.
  */
-const CACHE = "cys-v2";
+const CACHE = "cys-v3";
 const SHELL = [
   "./",
   "index.html",
   "learn.html",
   "orsay.html",
+  "paris.html",
   "manifest.webmanifest",
   "icons/icon-192.png",
   "icons/icon-512.png",
