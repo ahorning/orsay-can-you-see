@@ -8,12 +8,15 @@ the giant station clock!), taps a card when she spots it on the wall, and earns 
 star + confetti. Big tappable cards, bright colours, a "fun fact" for each
 artist, and a progress bar — all designed to be read aloud to a 4-year-old.
 
-There are two activities so far:
+There are three activities so far:
 
 - **🎨 Learn Before We Go** — a study gallery grouped by artist, plus a
   *guess-the-artist* quiz to play at home before the trip, so the paintings feel
   like old friends by the time you arrive.
 - **🖼️ Orsay, Can You See?** — the in-museum scavenger hunt.
+- **🗼 Have You Seine It?** — a city-wide Paris hunt (the Eiffel Tower, a boat on
+  the Seine, a green Wallace fountain, a baguette…) for spotting things out and
+  about town.
 
 ## Use it on your phone (works fully offline)
 
@@ -81,10 +84,13 @@ shared/styles.css          Kid-friendly styling (shared across activities)
 shared/hunt.js             The scavenger-hunt engine (museum-agnostic)
 shared/learn.js            The learn engine (study gallery + quiz)
 museums/orsay/orsay.html   The Orsay hunt page
-museums/orsay/data.js      ← edit this to change the hunt content
+museums/orsay/data.js      ← edit this to change the Orsay hunt content
 museums/orsay/learn.html   The "learn before we go" page
 museums/orsay/artists.js   ← edit this to change the artists/paintings
 museums/orsay/images/      Public-domain painting photos
+cities/paris/paris.html    The "Have You Seine It?" Paris hunt page
+cities/paris/data.js       ← edit this to change the Paris hunt content
+cities/paris/images/       Optional photos for the photo-friendly Paris cards
 build/inline.py            Bundles everything into dist/*.html + PWA assets
 build/fetch-images.py      Downloads the painting photos (via Commons + the MediaWiki API)
 build/generate-icons.js    Generates the app icons (no dependencies)
@@ -99,6 +105,9 @@ dist/                      The single-file, offline, phone-ready builds
   seam for the browser's text-to-speech — flip `CYS.NARRATION` in
   `shared/common.js`).
 - 🏛️ **More museums** (the Louvre, the Pompidou) reusing the same engine.
-- 🗼 **City-wide Paris adventures** beyond museums.
+- 📸 **Photos for the Paris hunt** — its less-familiar cards (the métro sign, a
+  Wallace fountain) can each show a photo; drop one at `cities/paris/images/`.
+- 🗼 **More city adventures** — the Paris hunt is built; more cities/neighbourhoods
+  can reuse the same engine.
 
 Made with love for one very precocious art detective.

@@ -17,12 +17,18 @@ great memory for paintings) ahead of a family trip to Paris.
   - **Option B — self-contained `dist/*.html`** files (images base64-inlined) to
     AirDrop/email to a phone; open in airplane mode.
 
-## Two activities
+## Activities
 - **Learn Before We Go** (`museums/orsay/learn.html`) — study gallery grouped by
   artist + a guess-the-artist quiz, to play at home before the trip.
 - **Orsay, Can You See?** (`museums/orsay/orsay.html`) — the in-museum hunt:
   tap a card when she spots the artwork → ✓ + star + confetti; progress bar;
   localStorage persistence; parent-tappable reset.
+- **Have You Seine It?** (`cities/paris/paris.html`) — a city-wide Paris hunt
+  (Eiffel Tower, a bateau on the Seine, a Wallace fountain, a baguette…). Same
+  `shared/hunt.js` engine. Title is the Seine≈"seen" pun (parallel to
+  Orsay≈"O say can you see"). Cards are **emoji by design**; a few "photo-
+  friendly" ids (`metro-sign`, `wallace-fountain`, `sacre-coeur`, `bouquinistes`)
+  show a photo if one is dropped at `cities/paris/images/<id>.jpg`.
 
 ## Architecture / where things live
 - `index.html` — landing page (title: "Orsay, Can You See?" 🕰️).
@@ -35,8 +41,11 @@ great memory for paintings) ahead of a family trip to Paris.
 - `shared/styles.css` — all styling. Art-tile selectors are generalized to `.art`
   (NOT scoped to `.card`) so the quiz image scales too. Confetti uses a fixed,
   clipped `#confetti-layer`.
-- `museums/orsay/data.js` — **the only file to edit for hunt content.** Each item:
-  `id, title, find, where, fact, color, icon`.
+- `museums/orsay/data.js` — **the only file to edit for Orsay hunt content.**
+  Each item: `id, title, find, where, fact, color, icon`.
+- `cities/paris/data.js` — same shape; **the only file to edit for Paris hunt
+  content.** `cities/paris/paris.html` is a thin page loading the shared engine
+  (parallel to `museums/orsay/orsay.html`, just one dir shallower → `../../shared`).
 - `museums/orsay/artists.js` — learn-page artists + works. Degas's work id is
   `racehorses` (not "blue-dancers").
 - `museums/orsay/images/SOURCES.md` — artwork licensing + the Gauguin note.
@@ -49,14 +58,18 @@ great memory for paintings) ahead of a family trip to Paris.
   pageimages title fallback, so one bad filename can't silently drop a card to
   its emoji. Stdlib only; per-artwork failures never abort (returns 0). Needs
   real internet — **not** run in CI anymore (the committed images are used).
-- `build/inline.py` — bundles pages into `dist/*.html` (inlines CSS/JS + base64
-  images), injects PWA tags, copies PWA assets, writes `dist/index.html`.
+- `build/inline.py` — bundles every page in `PAGES` (Orsay learn + hunt, Paris
+  hunt) into flat `dist/*.html` (inlines CSS/JS + base64 images), injects PWA
+  tags, copies PWA assets, writes `dist/index.html`. `collect_images()` scans all
+  `IMAGE_DIRS`; each bundle is injected with **only the photos whose id it
+  references** (so all-emoji `paris.html` is ~25 KB, not 8 MB).
 - `build/generate-icons.js` — dependency-free Node PNG encoder for app icons.
-- `pwa/` — `manifest.webmanifest`, `sw.js` (CACHE `cys-v2`, **network-first for
-  page navigations** so deploys reach returning visitors, cache-first for assets),
-  `icons/`.
-- `.github/workflows/deploy.yml` — runs `fetch-images.py` then `inline.py`,
-  deploys `dist/` to Pages. Requires **Settings → Pages → Source = GitHub Actions**.
+- `pwa/` — `manifest.webmanifest`, `sw.js` (CACHE `cys-v3`, precaches
+  `paris.html` too, **network-first for page navigations** so deploys reach
+  returning visitors, cache-first for assets), `icons/`.
+- `.github/workflows/deploy.yml` — runs `inline.py` (no live fetch anymore — the
+  photos are committed) and deploys `dist/` to Pages. Requires **Settings → Pages
+  → Source = GitHub Actions**.
 
 ## Gauguin gotcha
 `Paul Gauguin 056.jpg` is *Tahitian Women on the Beach*, NOT *Arearea* (they were
@@ -88,4 +101,5 @@ Pushing to `main` auto-builds and publishes via GitHub Actions.
 ## Roadmap (not built)
 - 🔊 Tap-to-hear narration (seam already in place).
 - 🏛️ More museums (Louvre, Pompidou) reusing the engines.
-- 🗼 City-wide Paris adventures beyond museums.
+- 📸 Photos for the Paris hunt's photo-friendly cards (own snaps or PD Commons).
+- 🗼 More city-wide adventures (the Paris hunt is built; add neighbourhoods?).

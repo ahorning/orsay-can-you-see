@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#e63946" />
+  <title>Have You Seine It?</title>
+  <style>
+/* "Can You See?" — kid-friendly scavenger-hunt styling.
+   Mobile-first: big tap targets, bright colours, readable for a grown-up
+   reading aloud to a 4-year-old. */
+
+:root {
+  --bg: #fff8f0;
+  --ink: #2b2118;
+  --accent: #e63946;
+  --accent-2: #457b9d;
+  --gold: #c9a227;
+  --card-radius: 18px;
+  --shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Trebuchet MS", "Comic Sans MS", "Segoe UI", system-ui, sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+
+header.hunt-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: linear-gradient(135deg, var(--accent), var(--gold));
+  color: #fff;
+  padding: 14px 16px;
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+header.hunt-header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  letter-spacing: 0.5px;
+}
+header.hunt-header p { margin: 4px 0 0; font-size: 0.95rem; opacity: 0.95; }
+
+/* Progress bar of stars */
+.progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  justify-content: center;
+}
+.progress .bar {
+  flex: 1;
+  max-width: 240px;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.progress .bar > span {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: #fff;
+  border-radius: 99px;
+  transition: width 0.4s ease;
+}
+.progress .count { font-weight: bold; white-space: nowrap; font-size: 0.95rem; }
+
+/* Card grid */
+main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 16px 12px 90px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+@media (max-width: 380px) {
+  main { grid-template-columns: 1fr; }
+}
+
+.card {
+  background: #fff;
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  cursor: pointer;
+  border: 4px solid transparent;
+  transition: transform 0.12s ease, border-color 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  display: flex;
+  flex-direction: column;
+}
+.card:active { transform: scale(0.97); }
+.card.found { border-color: #2a9d8f; }
+
+.art {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.art img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.placeholder-icon { font-size: 3.2rem; }
+
+/* The green check + star that appears when found */
+.card .stamp {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  background: rgba(42, 157, 143, 0.45);
+  opacity: 0;
+  transform: scale(0.4) rotate(-20deg);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.card.found .stamp { opacity: 1; transform: scale(1) rotate(-8deg); }
+
+.card .body { padding: 10px 12px 14px; }
+.card .body h2 { margin: 0 0 4px; font-size: 1.1rem; }
+.card .body .find { margin: 0 0 8px; font-size: 0.95rem; }
+.card .body .where { margin: 0; font-size: 0.82rem; color: #6d6875; font-style: italic; }
+
+/* Fun fact toggle */
+.card .fact {
+  margin: 8px 0 0;
+  font-size: 0.85rem;
+  background: #fff8f0;
+  border-radius: 10px;
+  padding: 8px 10px;
+  display: none;
+}
+.card.show-fact .fact { display: block; }
+.card .fact-btn {
+  margin-top: 8px;
+  background: var(--accent-2);
+  color: #fff;
+  border: none;
+  border-radius: 99px;
+  padding: 6px 12px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* Narration button — hidden until enabled later (Web Speech API seam) */
+.card .speak-btn {
+  display: none; /* flip via HUNT_CONFIG.narration */
+  margin-top: 8px;
+  margin-left: 6px;
+  background: var(--gold);
+  color: #fff;
+  border: none;
+  border-radius: 99px;
+  padding: 6px 12px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+body.narration .card .speak-btn { display: inline-block; }
+
+/* Footer with reset + win message */
+.footer-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: #fff;
+  box-shadow: 0 -4px 14px rgba(0,0,0,0.1);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.footer-bar .win { font-weight: bold; color: var(--accent); }
+.reset-btn {
+  background: #eee;
+  border: none;
+  border-radius: 99px;
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* ===== Learn page: mode toggle, gallery, quiz ===== */
+
+/* Learn has its own cool-blue identity, distinct from the red/gold hunt. */
+header.learn-header {
+  background: linear-gradient(135deg, var(--accent-2), #1d3557);
+}
+.learn-header .learn-stats {
+  margin: 8px 0 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.mode-toggle {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 14px;
+}
+.mode-btn {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.55);
+  border-radius: 99px;
+  padding: 9px 18px;
+  font-size: 0.95rem;
+  font-weight: bold;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.1s ease;
+}
+.mode-btn:active { transform: scale(0.96); }
+.mode-btn.active {
+  background: #fff;
+  color: var(--accent-2);
+  border-color: #fff;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
+}
+
+.learn-main {
+  display: block; /* not the hunt's 2-col grid — sections stack full width */
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 18px 14px 70px;
+}
+@media (max-width: 430px) {
+  .learn-main { padding: 14px 10px 60px; }
+}
+
+/* Study gallery — each artist is a colour-themed chapter (--artist set inline) */
+.artist-section {
+  --artist: var(--accent-2);
+  margin: 0 0 30px;
+}
+.artist-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--artist), rgba(0, 0, 0, 0.22));
+  box-shadow: var(--shadow);
+}
+.artist-head .face {
+  flex: none;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.9rem;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+.artist-meta { flex: 1; min-width: 0; }
+.artist-head h2 { margin: 0; font-size: 1.25rem; line-height: 1.15; }
+.artist-head p { margin: 5px 0 0; font-size: 0.85rem; line-height: 1.35; opacity: 0.95; }
+.artist-head .work-count {
+  flex: none;
+  align-self: flex-start;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: bold;
+  padding: 3px 9px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+  gap: 14px;
+  padding: 14px 2px 0;
+}
+@media (max-width: 400px) {
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+}
+
+/* Study cards: facts are always visible (it's a study page!), equal heights. */
+.study-card {
+  cursor: default;
+  border-top: 5px solid var(--artist);
+}
+.study-card:active { transform: none; }
+.study-card .body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.study-card .work-title { margin: 0 0 6px; font-size: 1rem; line-height: 1.2; }
+.study-card .fact {
+  display: block;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border-radius: 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: #5a5450;
+}
+
+/* Guess-the-artist quiz */
+.quiz {
+  max-width: 420px;
+  margin: 0 auto;
+  text-align: center;
+}
+.quiz-progress { font-weight: bold; color: #6d6875; margin: 4px 0 12px; }
+.quiz-art {
+  width: 100%;
+  max-width: 340px;
+  margin: 0 auto;
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow);
+  aspect-ratio: 1 / 1;
+}
+.quiz-prompt { font-size: 1.25rem; font-weight: bold; margin: 14px 0; }
+
+.choices { display: grid; gap: 10px; }
+.choice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  border: 3px solid #eee;
+  border-radius: 14px;
+  padding: 12px 16px;
+  font-size: 1.1rem;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  text-align: left;
+}
+.choice .face { font-size: 1.8rem; }
+.choice:active { transform: scale(0.98); }
+.choice.correct { border-color: #2a9d8f; background: #e9f7f4; }
+.choice.wrong { border-color: var(--accent); background: #fdeaec; animation: shake 0.3s; }
+.choice:disabled { cursor: default; opacity: 0.85; }
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+.quiz-feedback { font-size: 1rem; margin: 14px 0; min-height: 1.2em; }
+.next-btn {
+  background: var(--accent-2);
+  color: #fff;
+  border: none;
+  border-radius: 99px;
+  padding: 12px 26px;
+  font-size: 1.1rem;
+  font-family: inherit;
+  cursor: pointer;
+  margin-top: 6px;
+}
+.quiz-end .big-emoji { font-size: 4.5rem; }
+
+/* Confetti */
+#confetti-layer {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 100;
+}
+.confetti {
+  position: absolute;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+</style>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Can You See?" />
+  <meta name="mobile-web-app-capable" content="yes" />
+</head>
+<body>
+  <!-- Content is rendered by hunt.js from data.js -->
+  <script>
+window.ARTWORK_IMAGES = {
+
+};
+</script>
+  <script>
+/*
+ * Shared helpers for the "Can You See?" activities (hunt + learn).
+ * Exposes a tiny window.CYS namespace so each engine stays small.
+ */
+(function () {
+  "use strict";
+
+  // Create a DOM node: el("div", {class:"x", html:"<b>hi</b>"}, [child, "text"])
+  function el(tag, attrs, children) {
+    var node = document.createElement(tag);
+    attrs = attrs || {};
+    Object.keys(attrs).forEach(function (k) {
+      if (k === "class") node.className = attrs[k];
+      else if (k === "html") node.innerHTML = attrs[k];
+      else node.setAttribute(k, attrs[k]);
+    });
+    (children || []).forEach(function (c) {
+      node.appendChild(typeof c === "string" ? document.createTextNode(c) : c);
+    });
+    return node;
+  }
+
+  // Resolve an artwork image: single-file builds inject window.ARTWORK_IMAGES
+  // (id -> base64 data URI); otherwise load from the images/ folder.
+  function imageSrc(id) {
+    return (window.ARTWORK_IMAGES && window.ARTWORK_IMAGES[id]) ||
+           "images/" + id + ".jpg";
+  }
+
+  // Build the square "art" tile for an item, with a graceful emoji fallback
+  // when the real photo is missing. Returns the .art element.
+  function artTile(item) {
+    var art = el("div", { class: "art" });
+    art.style.background = item.color || "#ccc";
+    var img = el("img", {
+      alt: item.title,
+      src: imageSrc(item.id),
+      loading: "lazy",
+    });
+    img.addEventListener("error", function () {
+      img.remove();
+      art.appendChild(el("div", { class: "placeholder-icon" }, [item.icon || "🖼️"]));
+    });
+    art.appendChild(img);
+    return art;
+  }
+
+  // Text-to-speech seam — no-op unless `enabled` (kept off for now).
+  function speak(text, enabled) {
+    if (!enabled || !("speechSynthesis" in window)) return;
+    window.speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(text);
+    u.rate = 0.95;
+    window.speechSynthesis.speak(u);
+  }
+
+  var CONFETTI_COLORS = ["#e63946", "#457b9d", "#c9a227", "#2a9d8f",
+                         "#e76f51", "#f4a261", "#ff7aa2", "#8ac926"];
+
+  function confettiLayer() {
+    var layer = document.getElementById("confetti-layer");
+    if (!layer) {
+      layer = document.createElement("div");
+      layer.id = "confetti-layer";
+      document.body.appendChild(layer);
+    }
+    return layer;
+  }
+
+  // Pop pieces from a point (x, y) for a celebratory burst, or -- with no point
+  // -- rain them down across the screen. Each piece flies on its own path.
+  function confetti(count, x, y) {
+    if (!document.createElement("div").animate) return; // no Web Animations API
+    if (window.matchMedia &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var layer = confettiLayer();
+    var burst = x != null && y != null;
+    for (var i = 0; i < count; i++) confettiPiece(layer, burst, x, y);
+  }
+
+  function confettiPiece(layer, burst, ox, oy) {
+    var c = document.createElement("div");
+    c.className = "confetti";
+    var w = 6 + Math.random() * 8;
+    c.style.width = Math.round(w) + "px";
+    c.style.height = Math.round(w * (0.4 + Math.random() * 0.8)) + "px";
+    c.style.background = CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)];
+    if (Math.random() < 0.4) c.style.borderRadius = "50%";
+    layer.appendChild(c);
+
+    var spin = Math.round((Math.random() * 6 - 3) * 360);
+    var frames, opts;
+    if (burst) {
+      // launch up-and-out from the point, then fall with gravity
+      var dx = Math.round((Math.random() - 0.5) * 2 * (70 + Math.random() * 170));
+      var rise = Math.round(70 + Math.random() * 150);
+      var drop = Math.round(window.innerHeight * (0.35 + Math.random() * 0.5));
+      c.style.left = Math.round(ox) + "px";
+      c.style.top = Math.round(oy) + "px";
+      frames = [
+        { transform: "translate(-50%, -50%) rotate(0deg)", opacity: 1, offset: 0 },
+        { transform: "translate(calc(-50% + " + Math.round(dx * 0.5) + "px), calc(-50% - " + rise + "px)) rotate(" + Math.round(spin * 0.4) + "deg)", opacity: 1, offset: 0.4 },
+        { transform: "translate(calc(-50% + " + dx + "px), calc(-50% + " + drop + "px)) rotate(" + spin + "deg)", opacity: 0, offset: 1 }
+      ];
+      opts = { duration: 1100 + Math.random() * 1000, easing: "cubic-bezier(.15,.6,.3,1)", delay: Math.random() * 90, fill: "forwards" };
+    } else {
+      // rain down from the top with a side-to-side sway
+      var sway = Math.round((Math.random() - 0.5) * 140);
+      var fall = window.innerHeight + 40;
+      c.style.left = Math.round(Math.random() * window.innerWidth) + "px";
+      c.style.top = "-20px";
+      frames = [
+        { transform: "translate(-50%, 0) rotate(0deg)", opacity: 1, offset: 0 },
+        { transform: "translate(calc(-50% + " + sway + "px), " + Math.round(fall * 0.5) + "px) rotate(" + Math.round(spin * 0.5) + "deg)", opacity: 1, offset: 0.6 },
+        { transform: "translate(calc(-50% + " + (-sway) + "px), " + fall + "px) rotate(" + spin + "deg)", opacity: 0.9, offset: 1 }
+      ];
+      opts = { duration: 1900 + Math.random() * 1500, easing: "ease-in", delay: Math.random() * 450, fill: "forwards" };
+    }
+
+    var anim = c.animate(frames, opts);
+    var done = function () { c.remove(); };
+    anim.onfinish = done;
+    setTimeout(done, opts.duration + opts.delay + 400); // backstop cleanup
+  }
+
+  // localStorage that never throws (private mode / full storage).
+  var store = {
+    get: function (key) {
+      try { return JSON.parse(localStorage.getItem(key)) || {}; }
+      catch (e) { return {}; }
+    },
+    set: function (key, val) {
+      try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {}
+    },
+  };
+
+  window.CYS = {
+    el: el,
+    imageSrc: imageSrc,
+    artTile: artTile,
+    speak: speak,
+    confetti: confetti,
+    store: store,
+    NARRATION: false, // flip to true later to enable tap-to-hear everywhere
+  };
+})();
+
+</script>
+  <script>
+/*
+ * "Have You Seine It?" — a city-wide Paris scavenger hunt.
+ *
+ * This is the ONLY file you need to edit to change the hunt. Each item:
+ *   id     – stable short id (used for the image filename and saved progress)
+ *   title  – kid-friendly name, read aloud by a grown-up
+ *   find   – the "can you see…?" spotting challenge
+ *   where  – a gentle location hint (kept loose — the city is big!)
+ *   fact   – one short, delightful fact
+ *   color  – background colour shown behind the icon/photo
+ *   icon   – emoji shown when there's no photo
+ *
+ * Most cards use a bright emoji. A few less-familiar things (the métro sign,
+ * the Wallace fountain, Sacré-Cœur, the bouquinistes) are "photo-friendly":
+ * drop a photo at images/<id>.jpg (your own snapshot works great!) and it
+ * replaces the emoji automatically. See images/SOURCES.md.
+ */
+window.HUNT = {
+  id: "paris",
+  title: "Have You Seine It?",
+  subtitle: "A treasure hunt across Paris 🗼🔎",
+  items: [
+    {
+      id: "eiffel-tower",
+      title: "The Giant Iron Tower",
+      find: "Find the HUGE iron tower that pokes all the way up into the clouds!",
+      where: "You can spot it from all over the city — look up high!",
+      fact: "The Eiffel Tower is made of iron and grows a tiny bit taller on hot days. It has 1,665 steps to the top!",
+      color: "#8d99ae",
+      icon: "🗼",
+    },
+    {
+      id: "seine-boat",
+      title: "A Boat on the River",
+      find: "Spot a long boat gliding down the river Seine and sliding under a bridge.",
+      where: "On the water, winding right through the middle of Paris.",
+      fact: "The big glass riverboats are called bateaux-mouches — that means 'fly boats'!",
+      color: "#457b9d",
+      icon: "🛥️",
+    },
+    {
+      id: "carousel",
+      title: "A Twirly Carousel",
+      find: "Find a merry-go-round with painted horses going round and round.",
+      where: "Near the parks and big sights — listen for the music!",
+      fact: "Paris has carousels all over the city, and many of them are over 100 years old.",
+      color: "#e63946",
+      icon: "🎠",
+    },
+    {
+      id: "metro-sign",
+      title: "The Swirly Métro Sign",
+      find: "Find the curly green 'Métropolitain' sign at the top of the stairs going down to the trains.",
+      where: "At the entrances to the underground métro.",
+      fact: "An artist named Hector Guimard made these signs curl like green plants, over 120 years ago.",
+      color: "#2a9d8f",
+      icon: "🚇",
+    },
+    {
+      id: "wallace-fountain",
+      title: "The Little Green Fountain",
+      find: "Find a small green fountain with four ladies holding up the roof — the water is for drinking!",
+      where: "On street corners and in parks all over the city.",
+      fact: "A man named Richard Wallace gave Paris these pretty fountains so everyone could have free, clean water.",
+      color: "#2d6a4f",
+      icon: "⛲",
+    },
+    {
+      id: "baguette",
+      title: "A Crunchy Baguette",
+      find: "Can you spot someone carrying a long, crunchy baguette?",
+      where: "Coming out of a boulangerie — that's a bakery.",
+      fact: "Lots of Parisians buy a fresh baguette every single day. Squeeze it and the crust goes 'crack!'",
+      color: "#e9c46a",
+      icon: "🥖",
+    },
+    {
+      id: "louvre-pyramid",
+      title: "The Glass Pyramid",
+      find: "Find the giant glass pyramid standing in front of the big palace.",
+      where: "In the courtyard of the Louvre.",
+      fact: "The Louvre is one of the biggest museums in the whole world — and a shiny glass pyramid is its front door!",
+      color: "#6d6875",
+      icon: "🔺",
+    },
+    {
+      id: "sacre-coeur",
+      title: "The White Church on the Hill",
+      find: "Find the big, round, snowy-white church sitting on top of a hill.",
+      where: "High up in Montmartre — climb the steps or ride the little funicular.",
+      fact: "Sacré-Cœur sits on the highest hill in Paris, and its white stone gets even whiter when it rains!",
+      color: "#dee2e6",
+      icon: "⛪",
+    },
+    {
+      id: "arc-triomphe",
+      title: "The Giant Stone Arch",
+      find: "Find the enormous stone archway right in the middle of a busy roundabout.",
+      where: "At the top of a long, grand avenue full of shops.",
+      fact: "The Arc de Triomphe is so tall a daredevil once flew a little airplane straight through it!",
+      color: "#b08968",
+      icon: "🏛️",
+    },
+    {
+      id: "sidewalk-cafe",
+      title: "A Sidewalk Café",
+      find: "Find a café with tiny round tables and chairs out on the sidewalk.",
+      where: "On almost every corner — maybe stop for a hot chocolate!",
+      fact: "Parisians love to sit at little café tables facing the street, just to watch the world go by.",
+      color: "#d4a373",
+      icon: "☕",
+    },
+    {
+      id: "bouquinistes",
+      title: "Green Boxes of Old Books",
+      find: "Find the green metal boxes full of old books and pictures by the river.",
+      where: "Along the stone walls beside the Seine.",
+      fact: "These riverside book sellers are called bouquinistes, and their green boxes have lined the Seine for hundreds of years.",
+      color: "#386641",
+      icon: "📚",
+    },
+    {
+      id: "pigeons",
+      title: "Strutting Pigeons",
+      find: "How many pigeons can you count strutting and pecking on the ground?",
+      where: "In every square and park — especially where someone drops a crumb!",
+      fact: "Watch closely: pigeons bob their heads back and forth every time they take a step.",
+      color: "#adb5bd",
+      icon: "🐦",
+    },
+  ],
+};
+
+</script>
+  <script>
+/*
+ * Scavenger-hunt engine — museum-agnostic.
+ *
+ * Give it a `window.HUNT` object (see museums/orsay/data.js) and it renders a
+ * grid of big tappable cards, tracks "found" items in localStorage, celebrates
+ * with confetti, and shows a progress bar.
+ *
+ * Reuses helpers from shared/common.js (window.CYS), which must load first.
+ */
+(function () {
+  "use strict";
+
+  var CYS = window.CYS;
+  var el = CYS.el;
+  var data = window.HUNT;
+  if (!data) {
+    document.body.innerHTML = "<p style='padding:20px'>No hunt data found.</p>";
+    return;
+  }
+
+  var STORAGE_KEY = "hunt:" + (data.id || data.title || "default");
+  var found = CYS.store.get(STORAGE_KEY);
+
+  document.title = data.title;
+
+  // --- Header + progress ---------------------------------------------------
+  var header = el("header", { class: "hunt-header" }, [
+    el("h1", {}, [data.title]),
+    el("p", {}, [data.subtitle || ""]),
+  ]);
+  var progressBar = el("span");
+  var countLabel = el("span", { class: "count" });
+  header.appendChild(
+    el("div", { class: "progress" }, [
+      el("span", { class: "bar" }, [progressBar]),
+      countLabel,
+    ])
+  );
+
+  // --- Cards ---------------------------------------------------------------
+  var grid = el("main", { class: "hunt-grid" });
+
+  data.items.forEach(function (item) {
+    var card = el("div", { class: "card", "data-id": item.id });
+
+    var art = CYS.artTile(item);
+    art.appendChild(el("div", { class: "stamp" }, ["✅"]));
+    card.appendChild(art);
+
+    var body = el("div", { class: "body" });
+    body.appendChild(el("h2", {}, [item.title]));
+    body.appendChild(el("p", { class: "find" }, [item.find]));
+    if (item.where) body.appendChild(el("p", { class: "where" }, [item.where]));
+    body.appendChild(el("p", { class: "fact" }, [item.fact || ""]));
+
+    var factBtn = el("button", { class: "fact-btn", type: "button" }, ["💡 Fun fact"]);
+    factBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      card.classList.toggle("show-fact");
+    });
+    body.appendChild(factBtn);
+
+    var speakBtn = el("button", { class: "speak-btn", type: "button" }, ["🔊 Hear it"]);
+    speakBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      CYS.speak(item.title + ". " + item.find + " " + (item.fact || ""), CYS.NARRATION);
+    });
+    body.appendChild(speakBtn);
+
+    card.appendChild(body);
+
+    if (found[item.id]) card.classList.add("found");
+
+    // Tap the card (anywhere except the buttons) to mark found / unfound.
+    card.addEventListener("click", function () {
+      var nowFound = !card.classList.contains("found");
+      card.classList.toggle("found", nowFound);
+      if (nowFound) {
+        found[item.id] = true;
+        var r = card.getBoundingClientRect();
+        CYS.confetti(16, r.left + r.width / 2, r.top + r.height / 2);
+      } else {
+        delete found[item.id];
+      }
+      CYS.store.set(STORAGE_KEY, found);
+      updateProgress();
+    });
+
+    grid.appendChild(card);
+  });
+
+  // --- Footer (win message + reset) ---------------------------------------
+  var winLabel = el("span", { class: "win" });
+  var resetBtn = el("button", { class: "reset-btn", type: "button" }, ["🔄 Start over"]);
+  resetBtn.addEventListener("click", function () {
+    found = {};
+    CYS.store.set(STORAGE_KEY, found);
+    document.querySelectorAll(".card.found").forEach(function (c) {
+      c.classList.remove("found");
+    });
+    updateProgress();
+  });
+  var footer = el("div", { class: "footer-bar" }, [winLabel, resetBtn]);
+
+  document.body.appendChild(header);
+  document.body.appendChild(grid);
+  document.body.appendChild(footer);
+  if (CYS.NARRATION) document.body.classList.add("narration");
+
+  function updateProgress() {
+    var total = data.items.length;
+    var n = data.items.filter(function (i) { return found[i.id]; }).length;
+    progressBar.style.width = Math.round((n / total) * 100) + "%";
+    countLabel.textContent = "⭐ " + n + " / " + total;
+    winLabel.textContent =
+      n === total ? "🎉 You found them all! Great job, art detective!" : "";
+    if (n === total && total > 0) CYS.confetti(40);
+  }
+
+  updateProgress();
+})();
+
+</script>
+  <script>
+    if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('sw.js').catch(function () {});
+      });
+    }
+  </script>
+</body>
+</html>
