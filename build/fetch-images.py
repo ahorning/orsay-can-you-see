@@ -43,6 +43,9 @@ ARTWORKS = {
     "racehorses": [
         ("commons", "Edgar Germain Hilaire Degas 040.jpg"),
         ("title", "fr", "Le Défilé")],
+    "the-star": [
+        ("commons", "Edgar Degas - Ballet (L'Étoile).jpg"),
+        ("title", "en", "The Star (Degas)")],
     "poppies": [
         ("commons", "Claude Monet - Poppy Field - Google Art Project.jpg"),
         ("title", "en", "The Poppy Field near Argenteuil")],
@@ -55,6 +58,9 @@ ARTWORKS = {
     "rouen-cathedral": [
         ("commons", "Claude Monet - Rouen Cathedral, Facade (Sunset).JPG"),
         ("title", "en", "Rouen Cathedral (Monet series)")],
+    "magpie": [
+        ("commons", "Claude Monet - The Magpie - Google Art Project.jpg"),
+        ("title", "en", "The Magpie (Monet)")],
     "starry-rhone": [
         ("commons", "Starry Night Over the Rhone.jpg"),
         ("title", "en", "Starry Night Over the Rhône")],
@@ -76,12 +82,21 @@ ARTWORKS = {
     "swing": [
         ("commons", "Pierre-Auguste Renoir - La Balançoire.jpg"),
         ("title", "en", "The Swing (Renoir)")],
+    "dance-city": [
+        ("commons", "Pierre-Auguste Renoir 019.jpg"),
+        ("title", "en", "Dance in the City")],
+    "dance-country": [
+        ("commons", "Pierre Auguste Renoir - Country Dance - Google Art Project.jpg"),
+        ("title", "en", "Dance in the Country")],
     "arearea": [
         ("commons", "Paul Gauguin - Arearea - Google Art Project.jpg"),
         ("title", "en", "Arearea")],
     "tahitian-women": [
         ("commons", "Paul Gauguin 056.jpg"),
         ("title", "en", "Tahitian Women on the Beach")],
+    "white-horse": [
+        ("commons", "Paul Gauguin - Le cheval blanc.jpg"),
+        ("title", "en", "The White Horse (Gauguin)")],
     "card-players": [
         ("commons", "Les Joueurs de cartes, par Paul Cézanne.jpg"),
         ("title", "en", "The Card Players")],

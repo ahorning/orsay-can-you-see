@@ -22,10 +22,12 @@ MediaWiki API. Edit the `ARTWORKS` map in that script to change a source.
 | `little-dancer` | Little Dancer Aged Fourteen | Edgar Degas | both | sculpture, PD |
 | `ballet-class` | The Ballet Class | Edgar Degas | both | PD |
 | `racehorses` | Racehorses before the Stands | Edgar Degas | learn | PD |
+| `the-star` | The Star (L'Étoile) | Edgar Degas | learn | PD — pastel. NB the *Blue Dancers* pastel people often picture is in Moscow, not the Orsay. |
 | `poppies` | Poppy Field (Coquelicots) | Claude Monet | both | PD |
 | `water-lilies` | Blue Water Lilies | Claude Monet | both | PD |
 | `gare-saint-lazare` | The Gare Saint-Lazare | Claude Monet | learn | PD |
 | `rouen-cathedral` | Rouen Cathedral | Claude Monet | learn | PD |
+| `magpie` | The Magpie (La Pie) | Claude Monet | learn | PD |
 | `starry-rhone` | Starry Night Over the Rhône | Vincent van Gogh | both | PD |
 | `vangogh-selfportrait` | Self-Portrait (1889) | Vincent van Gogh | both | PD |
 | `bedroom-arles` | The Bedroom (Arles) | Vincent van Gogh | both | PD |
@@ -33,10 +35,13 @@ MediaWiki API. Edit the `ARTWORKS` map in that script to change a source.
 | `moulin-galette` | Bal du moulin de la Galette | Pierre-Auguste Renoir | both | PD |
 | `girls-piano` | Young Girls at the Piano | Pierre-Auguste Renoir | learn | PD |
 | `swing` | The Swing (La Balançoire) | Pierre-Auguste Renoir | learn | PD |
+| `dance-city` | Dance in the City | Pierre-Auguste Renoir | learn | PD — pairs with `dance-country`. (*Dance at Bougival* is in Boston, not the Orsay.) |
+| `dance-country` | Dance in the Country | Pierre-Auguste Renoir | learn | PD — pairs with `dance-city`. |
 | `snake-charmer` | The Snake Charmer | Henri Rousseau | both | PD |
 | `white-cat` | Le Chat blanc (The White Cat) | Pierre Bonnard | hunt | PD — Bonnard died 1947, so PD since 2018. |
 | `arearea` | Arearea (Joyousness) | Paul Gauguin | both | PD |
 | `tahitian-women` | Tahitian Women on the Beach | Paul Gauguin | learn | PD |
+| `white-horse` | The White Horse (Le Cheval blanc) | Paul Gauguin | learn | PD |
 | `card-players` | The Card Players | Paul Cézanne | learn | PD |
 | `apples-oranges` | Apples and Oranges | Paul Cézanne | learn | PD |
 | `sainte-victoire` | Mont Sainte-Victoire | Paul Cézanne | learn | PD |
