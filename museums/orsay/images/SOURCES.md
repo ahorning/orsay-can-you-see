@@ -49,12 +49,10 @@ Source: Wikipedia / Wikimedia Commons (see the `ARTWORKS` map in
 artwork). The Commons filenames were verified to resolve on 2026-05-29; if one
 ever breaks, the MediaWiki title fallback now covers it automatically.
 
-> **Pending fetch:** `the-circus`, `jane-avril` and `clowness` (added with the
-> Seurat / Toulouse-Lautrec artists) have resolvers wired up but their JPEGs
-> are **not committed yet** — run `build/fetch-images.py` on a real connection,
-> then `build/inline.py`, and commit the three new files. Until then those three
-> learn-page cards show their emoji placeholder. (`snake-charmer` was already
-> committed for the hunt, so Rousseau's card shows a real photo right away.)
+> **Fetched:** `the-circus`, `jane-avril` and `clowness` (added with the Seurat /
+> Toulouse-Lautrec artists) are now committed alongside the rest, so all three
+> learn-page cards show a real photo. (`snake-charmer` was already committed for
+> the hunt, so Rousseau's card had its photo from the start.)
 
 **Heads-up on the Gauguin file names.** On Commons, `Paul Gauguin 056.jpg` is
 *Tahitian Women on the Beach* — **not** *Arearea* (confirmed via each painting's
