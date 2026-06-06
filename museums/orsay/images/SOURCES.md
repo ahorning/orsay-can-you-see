@@ -33,18 +33,26 @@ MediaWiki API. Edit the `ARTWORKS` map in that script to change a source.
 | `moulin-galette` | Bal du moulin de la Galette | Pierre-Auguste Renoir | both | PD |
 | `girls-piano` | Young Girls at the Piano | Pierre-Auguste Renoir | learn | PD |
 | `swing` | The Swing (La Balançoire) | Pierre-Auguste Renoir | learn | PD |
-| `snake-charmer` | The Snake Charmer | Henri Rousseau | hunt | PD |
+| `snake-charmer` | The Snake Charmer | Henri Rousseau | both | PD |
 | `white-cat` | Le Chat blanc (The White Cat) | Pierre Bonnard | hunt | PD — Bonnard died 1947, so PD since 2018. |
 | `arearea` | Arearea (Joyousness) | Paul Gauguin | both | PD |
 | `tahitian-women` | Tahitian Women on the Beach | Paul Gauguin | learn | PD |
 | `card-players` | The Card Players | Paul Cézanne | learn | PD |
 | `apples-oranges` | Apples and Oranges | Paul Cézanne | learn | PD |
 | `sainte-victoire` | Mont Sainte-Victoire | Paul Cézanne | learn | PD |
+| `the-circus` | The Circus (Le Cirque) | Georges Seurat | learn | PD — the only major Seurat in France. |
+| `jane-avril` | Jane Avril Dancing | Henri de Toulouse-Lautrec | learn | PD |
+| `clowness` | The Clowness Cha-U-Kao | Henri de Toulouse-Lautrec | learn | PD — Orsay holds the 1895 oil-on-cardboard version (a similar one is in Munich). |
 
 Source: Wikipedia / Wikimedia Commons (see the `ARTWORKS` map in
 `build/fetch-images.py` for the exact Commons file and article title used per
 artwork). The Commons filenames were verified to resolve on 2026-05-29; if one
 ever breaks, the MediaWiki title fallback now covers it automatically.
+
+> **Fetched:** `the-circus`, `jane-avril` and `clowness` (added with the Seurat /
+> Toulouse-Lautrec artists) are now committed alongside the rest, so all three
+> learn-page cards show a real photo. (`snake-charmer` was already committed for
+> the hunt, so Rousseau's card had its photo from the start.)
 
 **Heads-up on the Gauguin file names.** On Commons, `Paul Gauguin 056.jpg` is
 *Tahitian Women on the Beach* — **not** *Arearea* (confirmed via each painting's

@@ -94,6 +94,15 @@ ARTWORKS = {
     "snake-charmer": [
         ("commons", "Henri Rousseau, known as le Douanier - The Snake Charmer - Google Art Project.jpg"),
         ("title", "en", "The Snake Charmer (Rousseau)")],
+    "the-circus": [
+        ("commons", "Georges Seurat, 1891, Le Cirque (The Circus), oil on canvas, 185 x 152 cm, Musée d'Orsay.jpg"),
+        ("title", "en", "The Circus (Seurat)")],
+    "jane-avril": [
+        ("commons", "Henri de Toulouse-Lautrec - Jane Avril Dancing - Google Art Project.jpg"),
+        ("title", "en", "Jane Avril Dancing")],
+    "clowness": [
+        ("commons", "Toulouse-Lautrec - The Clown Cha-U-Kao, 1895.jpg"),
+        ("title", "en", "Cha-U-Kao")],
     "white-cat": [
         ("commons", "Le Chat blanc.jpg"),
         ("commons", 'Pierre Bonnard , "Le Chat blanc", 1894.jpg'),

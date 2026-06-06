@@ -89,14 +89,52 @@ python3 build/inline.py         # → dist/*.html (+ PWA manifest, sw, icons)
 Pushing to `main` auto-builds and publishes via GitHub Actions.
 
 ## Working in THIS sandbox (important)
-- **No outbound network here.** External hosts are blocked (403 / "Host not in
-  allowlist"). `WebSearch` works; `WebFetch` and `curl` do not. So you can't run
-  `fetch-images.py` here — but you don't need to: the 20 photos are committed in
+- **Outbound network is an allowlist, not a total block.** Traffic goes through a
+  proxy that denies unlisted hosts with `403` + header `x-deny-reason:
+  host_not_allowed` ("Host not in allowlist"). On the default Claude-Code-on-the-
+  web policy the allowlist is **dev/package hosts only**: reachable =
+  `pypi.org`, `files.pythonhosted.org`, `github.com`, `raw.githubusercontent.com`,
+  `registry.npmjs.org`; **denied** = all of Wikimedia/Wikipedia
+  (`commons.wikimedia.org`, `upload.wikimedia.org`, `*.wikipedia.org`),
+  `wikidata.org`, public CDNs (jsdelivr, unpkg), `archive.org`, even
+  `musee-orsay.fr`. `WebSearch` (a server-side tool) works; `curl`/`urllib`/
+  `WebFetch` to a denied host do not. Don't waste time probing — to check, one
+  `curl -s -o /dev/null -w "%{http_code}"` is enough.
+- **Therefore `fetch-images.py` can't run on the default web policy** (it needs
+  `commons.wikimedia.org` + `upload.wikimedia.org` + `*.wikipedia.org`). You
+  usually don't need it: the artwork photos are committed under
   `museums/orsay/images/`, so `build/inline.py` works fully offline.
-- The committed `dist/*.html` (~8 MB each, 20 base64 images) match the committed
-  source images. For CSS/JS changes you can either rebuild with `inline.py`
-  (safe now that images are committed) or **patch the dist bundles in place**
-  (Python `str.replace`); either way verify the image count stays at 20.
+- The committed `dist/*.html` are big (~8 MB for the painting-heavy Orsay pages)
+  and must match the committed source images. For CSS/JS changes either rebuild
+  with `inline.py` (safe — images are committed) or **patch the dist bundles in
+  place** (Python `str.replace`); either way verify the inlined image count
+  didn't drop (the build prints "N photos" per page).
+
+## How we fetch/add artwork images (the photos in museums/orsay/images/)
+This is how the committed photos got there, and how to add more:
+1. **`build/fetch-images.py` downloads them from Wikimedia Commons** (verified
+   Commons file first, MediaWiki `pageimages` title fallback second) into
+   `museums/orsay/images/<id>.jpg`. Add a new painting by adding its `<id>` +
+   resolvers to the `ARTWORKS` map. It needs real network to `*.wikimedia.org`
+   and `*.wikipedia.org` (the Commons `Special:FilePath` redirect and the API
+   thumbnails both serve bytes from **`upload.wikimedia.org`** — that host is the
+   one people forget to allowlist).
+2. Run it **where that network is reachable**, then `build/inline.py`, then
+   **commit the new `*.jpg` + rebuilt `dist/`**. CI does *not* fetch (deploy
+   builds from committed images), so an un-fetched id ships as its emoji
+   placeholder.
+3. **To fetch from a Claude-Code web session:** the default policy blocks
+   Wikimedia (see above), so first change the *environment's* Network-access
+   policy (web UI, set at env-creation time — NOT editable from inside a running
+   container, NOT a `settings.json` thing) to **Full access** or a **custom
+   allowlist** containing `commons.wikimedia.org`, `upload.wikimedia.org`,
+   `en.wikipedia.org`, `fr.wikipedia.org`. Then **start a new session** (the
+   policy is baked in at container startup) and run the two scripts.
+   Docs: https://code.claude.com/docs/en/claude-code-on-the-web
+4. **Fallback when you can't widen the policy:** `github.com` /
+   `raw.githubusercontent.com` *are* reachable, so the same public-domain files
+   can be pulled from a GitHub mirror — but verify each matches the actual Orsay
+   painting (see the Gauguin file-swap gotcha) before trusting a mirror.
 
 ## Conventions
 - Develop on branch `claude/paris-museum-activities-x1aJE`; never push straight to
