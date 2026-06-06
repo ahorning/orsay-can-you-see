@@ -4,7 +4,9 @@
  * Used by both the study gallery and the guess-the-artist quiz.
  * All works are in the Musée d'Orsay, so she'll meet them again in person.
  *
- * Each artist:  id, name, face (emoji), color, fact (kid-friendly), works[]
+ * Each artist:  id, name, last (surname-only label for the quiz so a toddler
+ *               reads one short word), face (emoji), color, fact (kid-friendly),
+ *               works[]
  * Each work:    id (also the image filename), title, fact, color, icon
  *
  * Real photos go in images/<id>.jpg (see images/SOURCES.md). Missing photos
@@ -17,6 +19,7 @@ window.ARTISTS = {
     {
       id: "monet",
       name: "Claude Monet",
+      last: "Monet",
       face: "🌅",
       color: "#457b9d",
       fact: "Monet painted outdoors, very fast, to catch the sunlight before it changed. Look for soft, dabby brushstrokes!",
@@ -34,6 +37,7 @@ window.ARTISTS = {
     {
       id: "vangogh",
       name: "Vincent van Gogh",
+      last: "Van Gogh",
       face: "🌻",
       color: "#1d3557",
       fact: "Van Gogh used thick, swirly paint and loved bright yellows and blues. You can almost feel the paint move!",
@@ -51,6 +55,7 @@ window.ARTISTS = {
     {
       id: "degas",
       name: "Edgar Degas",
+      last: "Degas",
       face: "🩰",
       color: "#b5838d",
       fact: "Degas loved dancers and everyday moments — yawning, stretching, tying a shoe. Look for people caught mid-movement.",
@@ -66,6 +71,7 @@ window.ARTISTS = {
     {
       id: "renoir",
       name: "Auguste Renoir",
+      last: "Renoir",
       face: "🎉",
       color: "#f4a261",
       fact: "Renoir painted happy people, parties and sunshine. Look for dots of golden light and smiling faces.",
@@ -81,6 +87,7 @@ window.ARTISTS = {
     {
       id: "gauguin",
       name: "Paul Gauguin",
+      last: "Gauguin",
       face: "🏝️",
       color: "#e76f51",
       fact: "Gauguin sailed to a faraway island and painted with big, bold, bright colours.",
@@ -94,6 +101,7 @@ window.ARTISTS = {
     {
       id: "cezanne",
       name: "Paul Cézanne",
+      last: "Cézanne",
       face: "🍎",
       color: "#6d6875",
       fact: "Cézanne built his pictures from simple shapes — and he LOVED painting apples.",
@@ -109,6 +117,7 @@ window.ARTISTS = {
     {
       id: "seurat",
       name: "Georges Seurat",
+      last: "Seurat",
       face: "🎪",
       color: "#e9c46a",
       fact: "Seurat made his pictures out of millions of teeny-tiny coloured dots! Stand back and the dots blend together. It's called pointillism.",
@@ -120,6 +129,7 @@ window.ARTISTS = {
     {
       id: "rousseau",
       name: "Henri Rousseau",
+      last: "Rousseau",
       face: "🌴",
       color: "#2a9d8f",
       fact: "Rousseau never saw a real jungle! He dreamed up his wild forests from plants in the city greenhouse.",
@@ -131,6 +141,7 @@ window.ARTISTS = {
     {
       id: "lautrec",
       name: "Henri de Toulouse-Lautrec",
+      last: "Toulouse-Lautrec",
       face: "💃",
       color: "#e76f51",
       fact: "Toulouse-Lautrec loved the busy Paris nights — dancers, singers and clowns. He caught them with quick, swooshy lines.",

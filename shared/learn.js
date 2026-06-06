@@ -138,7 +138,7 @@
     choicesFor(entry.artist).forEach(function (artist) {
       var btn = el("button", { class: "choice", type: "button" }, [
         el("span", { class: "face" }, [artist.face || "🎨"]),
-        el("span", {}, [artist.name]),
+        el("span", {}, [artist.last || artist.name]),
       ]);
       btn.addEventListener("click", function () {
         if (answered) return;
@@ -148,7 +148,7 @@
           score++;
           var r = btn.getBoundingClientRect();
           CYS.confetti(18, r.left + r.width / 2, r.top);
-          feedback.textContent = "Yes! " + entry.work.title + " by " + entry.artist.name + ".";
+          feedback.textContent = "Yes! " + entry.work.title + " by " + (entry.artist.last || entry.artist.name) + ".";
           feedback.appendChild(el("br"));
           feedback.appendChild(document.createTextNode("💡 " + (entry.work.fact || "")));
           choiceBox.querySelectorAll(".choice").forEach(function (b) { b.disabled = true; });
