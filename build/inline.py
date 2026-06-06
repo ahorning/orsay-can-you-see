@@ -23,6 +23,8 @@ import re
 import shutil
 from pathlib import Path
 
+mimetypes.add_type("image/svg+xml", ".svg")  # not registered on every platform
+
 ROOT = Path(__file__).resolve().parent.parent
 ORSAY = ROOT / "museums" / "orsay"
 PARIS = ROOT / "cities" / "paris"
@@ -63,7 +65,7 @@ PAGES = {
     PARIS / "paris.html": "paris.html",
 }
 
-IMG_EXTS = (".jpg", ".jpeg", ".png", ".webp", ".gif")
+IMG_EXTS = (".jpg", ".jpeg", ".png", ".webp", ".gif", ".svg")
 
 
 def read(path: Path) -> str:
@@ -83,8 +85,12 @@ def collect_images() -> dict:
     for d in IMAGE_DIRS:
         if d.exists():
             for f in sorted(d.iterdir()):
-                if f.suffix.lower() in IMG_EXTS:
-                    images[f.stem] = data_uri(f)
+                if f.suffix.lower() not in IMG_EXTS:
+                    continue
+                # A real photo always wins over an SVG illustration of the same id.
+                if f.suffix.lower() == ".svg" and f.stem in images:
+                    continue
+                images[f.stem] = data_uri(f)
     return images
 
 

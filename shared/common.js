@@ -27,8 +27,9 @@
            "images/" + id + ".jpg";
   }
 
-  // Build the square "art" tile for an item, with a graceful emoji fallback
-  // when the real photo is missing. Returns the .art element.
+  // Build the square "art" tile for an item. Picture precedence: an inlined
+  // data URI / real photo first, then a committed SVG illustration
+  // (images/<id>.svg — used by the Paris hunt), then a coloured emoji.
   function artTile(item) {
     var art = el("div", { class: "art" });
     art.style.background = item.color || "#ccc";
@@ -37,7 +38,13 @@
       src: imageSrc(item.id),
       loading: "lazy",
     });
+    var triedSvg = false;
     img.addEventListener("error", function () {
+      if (!triedSvg && img.src.indexOf("data:") !== 0) {
+        triedSvg = true; // a real photo is missing — try the SVG illustration
+        img.src = "images/" + item.id + ".svg";
+        return;
+      }
       img.remove();
       art.appendChild(el("div", { class: "placeholder-icon" }, [item.icon || "🖼️"]));
     });

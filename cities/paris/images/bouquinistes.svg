@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Green riverside boxes full of old books">
+  <defs>
+    <linearGradient id="bsky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#cdeefb"/>
+      <stop offset="1" stop-color="#eef7ee"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bsky)"/>
+  <!-- the Seine -->
+  <rect y="316" width="400" height="84" fill="#6fb0cf"/>
+  <path d="M0 332 q40 8 80 0 t80 0 t80 0 t80 0 t80 0" fill="none" stroke="#9fcfe4" stroke-width="4"/>
+  <path d="M0 360 q40 8 80 0 t80 0 t80 0 t80 0 t80 0" fill="none" stroke="#9fcfe4" stroke-width="4"/>
+  <!-- stone parapet -->
+  <rect y="300" width="400" height="22" fill="#cbbfa6"/>
+  <!-- two green book boxes with open lids -->
+  <g>
+    <!-- box 1 -->
+    <rect x="44" y="196" width="150" height="104" rx="6" fill="#386641"/>
+    <rect x="44" y="196" width="150" height="14" fill="#2c5234"/>
+    <!-- open lid -->
+    <path d="M44 196 L60 150 L210 150 L194 196 Z" fill="#4e8358"/>
+    <!-- books -->
+    <g>
+      <rect x="58" y="218" width="20" height="70" fill="#c1432f"/>
+      <rect x="80" y="222" width="18" height="66" fill="#e0a23b"/>
+      <rect x="100" y="216" width="22" height="72" fill="#2f6f9e"/>
+      <rect x="124" y="224" width="16" height="64" fill="#7a9e3a"/>
+      <rect x="142" y="218" width="20" height="70" fill="#8d5fae"/>
+      <rect x="164" y="222" width="18" height="66" fill="#d96a8c"/>
+    </g>
+  </g>
+  <g>
+    <!-- box 2 -->
+    <rect x="214" y="206" width="142" height="94" rx="6" fill="#386641"/>
+    <rect x="214" y="206" width="142" height="13" fill="#2c5234"/>
+    <path d="M214 206 L228 164 L368 164 L354 206 Z" fill="#4e8358"/>
+    <g>
+      <rect x="226" y="226" width="18" height="64" fill="#e0a23b"/>
+      <rect x="246" y="222" width="20" height="68" fill="#2f6f9e"/>
+      <rect x="268" y="228" width="16" height="62" fill="#c1432f"/>
+      <rect x="286" y="222" width="20" height="68" fill="#7a9e3a"/>
+      <rect x="308" y="226" width="18" height="64" fill="#d96a8c"/>
+      <rect x="328" y="224" width="18" height="66" fill="#8d5fae"/>
+    </g>
+  </g>
+</svg>

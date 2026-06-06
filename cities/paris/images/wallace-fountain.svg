@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="A little green Wallace drinking fountain">
+  <rect width="400" height="400" fill="#e7f1e9"/>
+  <!-- ground -->
+  <rect y="360" width="400" height="40" fill="#cdbfa6"/>
+  <rect y="360" width="400" height="6" fill="#b6a888"/>
+  <!-- stepped base -->
+  <rect x="146" y="332" width="108" height="30" rx="4" fill="#244f3b"/>
+  <rect x="158" y="304" width="84" height="30" fill="#2f6b4f"/>
+  <rect x="172" y="286" width="56" height="20" fill="#357a59"/>
+  <!-- four caryatid figures holding up the dome -->
+  <g fill="#2f6b4f">
+    <path d="M168 288 q-12 -56 6 -98 q16 22 10 98 z"/>
+    <path d="M232 288 q12 -56 -6 -98 q-16 22 -10 98 z"/>
+    <path d="M190 288 q-6 -60 8 -104 q14 40 6 104 z"/>
+    <path d="M210 288 q6 -60 -8 -104 q-14 40 -6 104 z"/>
+  </g>
+  <g fill="#3c855f">
+    <circle cx="176" cy="190" r="9"/>
+    <circle cx="224" cy="190" r="9"/>
+    <circle cx="197" cy="182" r="9"/>
+    <circle cx="203" cy="182" r="9"/>
+  </g>
+  <!-- ring the figures support -->
+  <rect x="150" y="176" width="100" height="18" rx="7" fill="#244f3b"/>
+  <!-- dome -->
+  <path d="M152 178 q48 -72 96 0 z" fill="#2f6b4f"/>
+  <g stroke="#1c4030" stroke-width="4" fill="none" stroke-linecap="round">
+    <path d="M200 124 V178"/>
+    <path d="M176 134 Q172 158 168 178"/>
+    <path d="M224 134 Q228 158 232 178"/>
+  </g>
+  <!-- pointed finial -->
+  <rect x="196" y="104" width="8" height="22" fill="#357a59"/>
+  <circle cx="200" cy="102" r="9" fill="#3c855f"/>
+  <!-- trickle of drinking water -->
+  <path d="M200 196 q-4 28 0 50" stroke="#7fc4e8" stroke-width="5" fill="none" stroke-linecap="round"/>
+</svg>
