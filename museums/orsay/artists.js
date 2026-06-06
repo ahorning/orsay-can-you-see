@@ -106,5 +106,40 @@ window.ARTISTS = {
           fact: "A big mountain he painted over and over from his home." },
       ],
     },
+    {
+      id: "seurat",
+      name: "Georges Seurat",
+      face: "🎪",
+      color: "#e9c46a",
+      fact: "Seurat made his pictures out of millions of teeny-tiny coloured dots! Stand back and the dots blend together. It's called pointillism.",
+      works: [
+        { id: "the-circus", title: "The Circus", icon: "🎪", color: "#e9c46a",
+          fact: "A lady balances on a galloping white horse while a clown tumbles — all painted in tiny dots." },
+      ],
+    },
+    {
+      id: "rousseau",
+      name: "Henri Rousseau",
+      face: "🌴",
+      color: "#2a9d8f",
+      fact: "Rousseau never saw a real jungle! He dreamed up his wild forests from plants in the city greenhouse.",
+      works: [
+        { id: "snake-charmer", title: "The Snake Charmer", icon: "🐍", color: "#264653",
+          fact: "A mysterious lady plays her flute in the moonlight while snakes peek out of the dark jungle." },
+      ],
+    },
+    {
+      id: "lautrec",
+      name: "Henri de Toulouse-Lautrec",
+      face: "💃",
+      color: "#e76f51",
+      fact: "Toulouse-Lautrec loved the busy Paris nights — dancers, singers and clowns. He caught them with quick, swooshy lines.",
+      works: [
+        { id: "jane-avril", title: "Jane Avril Dancing", icon: "💃", color: "#e76f51",
+          fact: "A famous dancer kicking up her leg — find the swirl of her skirt!" },
+        { id: "clowness", title: "The Clowness Cha-U-Kao", icon: "🤡", color: "#f4a261",
+          fact: "A circus clown getting ready, in a big floppy yellow collar." },
+      ],
+    },
   ],
 };
