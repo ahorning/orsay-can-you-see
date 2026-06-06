@@ -54,7 +54,7 @@ great memory for paintings) ahead of a family trip to Paris.
 - `museums/orsay/artists.js` — learn-page artists + works. Degas's work id is
   `racehorses` (not "blue-dancers").
 - `museums/orsay/images/SOURCES.md` — artwork licensing + the Gauguin note.
-- `museums/orsay/images/*.jpg` — **the painting photos are committed** (20 of
+- `museums/orsay/images/*.jpg` — **the painting photos are committed** (24 of
   them). The build inlines these; deploys need no network and always ship every
   picture. The clock stays emoji on purpose. `fetch-images.py` is now only for
   refreshing/adding photos locally (then commit them).
@@ -137,8 +137,8 @@ This is how the committed photos got there, and how to add more:
    painting (see the Gauguin file-swap gotcha) before trusting a mirror.
 
 ## Conventions
-- Develop on branch `claude/paris-museum-activities-x1aJE`; never push straight to
-  `main`. Land changes via squash-merged PRs.
+- Develop on a short-lived `claude/<topic>` feature branch; never push straight
+  to `main`. Land changes via squash-merged PRs (delete the branch after merge).
 - Vanilla JS, no build framework, no dependencies. Keep it boring and readable.
 - Terse, kid-facing copy. Big tap targets, bright colours, read-aloud friendly.
 
