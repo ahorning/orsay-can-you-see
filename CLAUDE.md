@@ -54,7 +54,7 @@ great memory for paintings) ahead of a family trip to Paris.
 - `museums/orsay/artists.js` — learn-page artists + works. Degas's work id is
   `racehorses` (not "blue-dancers").
 - `museums/orsay/images/SOURCES.md` — artwork licensing + the Gauguin note.
-- `museums/orsay/images/*.jpg` — **the painting photos are committed** (24 of
+- `museums/orsay/images/*.jpg` — **the painting photos are committed** (29 of
   them). The build inlines these; deploys need no network and always ship every
   picture. The clock stays emoji on purpose. `fetch-images.py` is now only for
   refreshing/adding photos locally (then commit them).

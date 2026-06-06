@@ -32,6 +32,8 @@ window.ARTISTS = {
           fact: "A train station full of steam and smoke — just like the building the museum is in!" },
         { id: "rouen-cathedral", title: "Rouen Cathedral", icon: "⛪", color: "#c9a227",
           fact: "He painted the same church many times to show how light changes all day." },
+        { id: "magpie", title: "The Magpie", icon: "🐦", color: "#a8dadc",
+          fact: "A quiet snowy morning — can you find the little black bird sitting on the gate?" },
       ],
     },
     {
@@ -66,6 +68,8 @@ window.ARTISTS = {
           fact: "A statue wearing a REAL cloth tutu, standing on her tiptoes." },
         { id: "racehorses", title: "Racehorses before the Stands", icon: "🐎", color: "#90be6d",
           fact: "Horses and jockeys waiting to race — Degas loved drawing them too." },
+        { id: "the-star", title: "The Star", icon: "⭐", color: "#cdb4db",
+          fact: "A ballerina shines alone on stage on her tiptoes. Can you spot the man waiting in the shadows?" },
       ],
     },
     {
@@ -82,6 +86,10 @@ window.ARTISTS = {
           fact: "Two girls making music together." },
         { id: "swing", title: "The Swing", icon: "🌳", color: "#90be6d",
           fact: "Sunlight dapples through the trees onto a girl on a swing." },
+        { id: "dance-city", title: "Dance in the City", icon: "💃", color: "#1d3557",
+          fact: "A fancy couple twirling indoors — look at her long, shiny white dress." },
+        { id: "dance-country", title: "Dance in the Country", icon: "🕺", color: "#90be6d",
+          fact: "Dancing outside in the sunshine — she's smiling and her straw hat fell on the ground!" },
       ],
     },
     {
@@ -96,6 +104,8 @@ window.ARTISTS = {
           fact: "Find the little orange dog hiding in the picture!" },
         { id: "tahitian-women", title: "Tahitian Women on the Beach", icon: "🏖️", color: "#f4a261",
           fact: "Two friends sitting on a warm, sandy beach." },
+        { id: "white-horse", title: "The White Horse", icon: "🐴", color: "#2a9d8f",
+          fact: "A white horse drinks from a stream — but Gauguin painted it a little bit green!" },
       ],
     },
     {
