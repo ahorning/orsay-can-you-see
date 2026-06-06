@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="The white domed church of Sacre-Coeur on a hill">
+  <defs>
+    <linearGradient id="csky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9fd2f0"/>
+      <stop offset="1" stop-color="#dff1fb"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#csky)"/>
+  <!-- green hill -->
+  <path d="M0 330 Q200 286 400 330 V400 H0 Z" fill="#6aa84f"/>
+  <path d="M0 352 Q200 318 400 352 V400 H0 Z" fill="#5b9442"/>
+  <!-- main white body -->
+  <rect x="120" y="232" width="160" height="92" fill="#f7f7f0"/>
+  <rect x="120" y="232" width="160" height="92" fill="#e4e2d4" opacity="0.0"/>
+  <!-- arched doorways -->
+  <g fill="#cfd6d9">
+    <path d="M140 324 v-30 a12 12 0 0 1 24 0 v30 z"/>
+    <path d="M188 324 v-34 a12 12 0 0 1 24 0 v34 z"/>
+    <path d="M236 324 v-30 a12 12 0 0 1 24 0 v30 z"/>
+  </g>
+  <!-- side small domes -->
+  <path d="M118 234 q22 -40 44 0 z" fill="#f1efe4"/>
+  <path d="M238 234 q22 -40 44 0 z" fill="#f1efe4"/>
+  <!-- big central dome -->
+  <rect x="172" y="206" width="56" height="30" fill="#f7f7f0"/>
+  <path d="M172 208 q28 -96 56 0 z" fill="#fbfbf5"/>
+  <path d="M172 208 q28 -96 56 0" fill="none" stroke="#dcdacb" stroke-width="3"/>
+  <!-- dome lantern + cross -->
+  <rect x="192" y="116" width="16" height="22" fill="#f1efe4"/>
+  <rect x="197" y="98" width="6" height="20" fill="#c9cab6"/>
+  <rect x="190" y="104" width="20" height="6" fill="#c9cab6"/>
+  <!-- tall campanile on the right -->
+  <rect x="288" y="252" width="30" height="72" fill="#f1efe4"/>
+  <path d="M288 252 l15 -26 l15 26 z" fill="#fbfbf5"/>
+  <!-- shading down the left of the central dome -->
+  <path d="M200 138 q-22 24 -22 70 l-6 0 q0 -52 28 -70 z" fill="#e7e5d6" opacity="0.7"/>
+</svg>

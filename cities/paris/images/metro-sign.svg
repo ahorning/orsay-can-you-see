@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="The swirly green Paris Metropolitain sign">
+  <defs>
+    <linearGradient id="msky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#cdeefb"/>
+      <stop offset="1" stop-color="#eaf7ef"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#msky)"/>
+  <!-- pavement -->
+  <rect y="352" width="400" height="48" fill="#c9b79c"/>
+  <rect y="352" width="400" height="7" fill="#b09c7d"/>
+  <!-- green art-nouveau posts -->
+  <g fill="none" stroke="#1f6b4f" stroke-width="15" stroke-linecap="round">
+    <path d="M122 354 V150 q0 -36 34 -42"/>
+    <path d="M278 354 V150 q0 -36 -34 -42"/>
+  </g>
+  <!-- curling muguet stalks for the lamps -->
+  <g fill="none" stroke="#2e8b63" stroke-width="9" stroke-linecap="round">
+    <path d="M122 214 q-40 -8 -34 -50 q30 6 34 50"/>
+    <path d="M278 214 q40 -8 34 -50 q-30 6 -34 50"/>
+  </g>
+  <!-- glowing amber lamp globes -->
+  <circle cx="146" cy="104" r="21" fill="#ffb347" stroke="#1f6b4f" stroke-width="8"/>
+  <circle cx="254" cy="104" r="21" fill="#ffb347" stroke="#1f6b4f" stroke-width="8"/>
+  <circle cx="146" cy="100" r="7" fill="#fff2cf"/>
+  <circle cx="254" cy="100" r="7" fill="#fff2cf"/>
+  <!-- amber sign panel -->
+  <rect x="112" y="168" width="176" height="118" rx="20" fill="#f4c430" stroke="#1f6b4f" stroke-width="10"/>
+  <text x="200" y="244" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="52" font-style="italic" font-weight="700" fill="#1f6b4f">Métro</text>
+</svg>

@@ -28,14 +28,19 @@ great memory for paintings) ahead of a family trip to Paris.
   `shared/hunt.js` engine. Title is the Seine≈"seen" pun (parallel to
   Orsay≈"O say can you see"). Cards are **emoji by design**; a few "photo-
   friendly" ids (`metro-sign`, `wallace-fountain`, `sacre-coeur`, `bouquinistes`)
-  show a photo if one is dropped at `cities/paris/images/<id>.jpg`.
+  ship a hand-drawn **SVG illustration** at `cities/paris/images/<id>.svg`
+  (original to this repo, public domain — keeps the hunt offline with no
+  licensing worries). Picture precedence in `artTile()` is **real photo → SVG
+  illustration → emoji**: drop a `cities/paris/images/<id>.jpg` (your own
+  snapshot works great) and it automatically wins over the illustration.
 
 ## Architecture / where things live
 - `index.html` — landing page (title: "Orsay, Can You See?" 🕰️).
 - `shared/common.js` — `window.CYS` namespace: `el()`, `imageSrc()`, `artTile()`,
   `speak()`, `confetti()`, `store`, `NARRATION` flag. `imageSrc()` uses
   `window.ARTWORK_IMAGES` (base64 map injected by the build) and falls back to
-  `images/<id>.jpg`, then to a coloured emoji placeholder.
+  `images/<id>.jpg`. `artTile()` then tries `images/<id>.svg` (the Paris
+  illustrations) before the coloured emoji placeholder.
 - `shared/hunt.js` — scavenger-hunt engine (museum-agnostic).
 - `shared/learn.js` — study gallery + quiz engine.
 - `shared/styles.css` — all styling. Art-tile selectors are generalized to `.art`
@@ -61,8 +66,9 @@ great memory for paintings) ahead of a family trip to Paris.
 - `build/inline.py` — bundles every page in `PAGES` (Orsay learn + hunt, Paris
   hunt) into flat `dist/*.html` (inlines CSS/JS + base64 images), injects PWA
   tags, copies PWA assets, writes `dist/index.html`. `collect_images()` scans all
-  `IMAGE_DIRS`; each bundle is injected with **only the photos whose id it
-  references** (so all-emoji `paris.html` is ~25 KB, not 8 MB).
+  `IMAGE_DIRS` (jpg/png/webp/gif **and svg**; a real raster wins over an `.svg`
+  of the same id); each bundle is injected with **only the photos whose id it
+  references** (so `paris.html` is ~36 KB — just its 4 tiny SVGs — not 8 MB).
 - `build/generate-icons.js` — dependency-free Node PNG encoder for app icons.
 - `pwa/` — `manifest.webmanifest`, `sw.js` (CACHE `cys-v3`, precaches
   `paris.html` too, **network-first for page navigations** so deploys reach
@@ -101,5 +107,6 @@ Pushing to `main` auto-builds and publishes via GitHub Actions.
 ## Roadmap (not built)
 - 🔊 Tap-to-hear narration (seam already in place).
 - 🏛️ More museums (Louvre, Pompidou) reusing the engines.
-- 📸 Photos for the Paris hunt's photo-friendly cards (own snaps or PD Commons).
+- 📸 Real photos for the Paris hunt's photo-friendly cards (own snaps or PD
+  Commons) to replace the shipped SVG illustrations — drop `<id>.jpg`, it wins.
 - 🗼 More city-wide adventures (the Paris hunt is built; add neighbourhoods?).
