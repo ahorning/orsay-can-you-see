@@ -41,7 +41,13 @@
   var grid = el("main", { class: "hunt-grid" });
 
   data.items.forEach(function (item) {
-    var card = el("div", { class: "card", "data-id": item.id });
+    var card = el("div", {
+      class: "card",
+      "data-id": item.id,
+      role: "button",
+      tabindex: "0",
+      "aria-label": item.title,
+    });
 
     var art = CYS.artTile(item);
     art.appendChild(el("div", { class: "stamp" }, ["✅"]));
@@ -70,11 +76,13 @@
     card.appendChild(body);
 
     if (found[item.id]) card.classList.add("found");
+    card.setAttribute("aria-pressed", found[item.id] ? "true" : "false");
 
     // Tap the card (anywhere except the buttons) to mark found / unfound.
     card.addEventListener("click", function () {
       var nowFound = !card.classList.contains("found");
       card.classList.toggle("found", nowFound);
+      card.setAttribute("aria-pressed", nowFound ? "true" : "false");
       if (nowFound) {
         found[item.id] = true;
         var r = card.getBoundingClientRect();
@@ -84,6 +92,13 @@
       }
       CYS.store.set(STORAGE_KEY, found);
       updateProgress();
+    });
+    card.addEventListener("keydown", function (e) {
+      if (e.target !== card) return; // inner buttons handle their own keys
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        card.click();
+      }
     });
 
     grid.appendChild(card);
