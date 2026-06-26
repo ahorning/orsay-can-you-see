@@ -125,5 +125,14 @@ window.HUNT = {
       color: "#457b9d",
       icon: "🐑",
     },
+    {
+      id: "arcimboldo-summer",
+      title: "The Funny Food Faces",
+      find: "Find the four funny faces — each made of fruit, flowers, vegetables or twigs, one for every season!",
+      where: "Look for four portraits hanging together that don't look like people at all.",
+      fact: "Giuseppe Arcimboldo painted The Four Seasons as faces built from things that grow — peaches, grapes, flowers and even a knobbly old tree.",
+      color: "#6a994e",
+      icon: "🥕",
+    },
   ],
 };

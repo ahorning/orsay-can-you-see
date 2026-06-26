@@ -21,6 +21,7 @@ window.ARTISTS = {
     {
       id: "leonardo",
       name: "Leonardo da Vinci",
+      last: "Leonardo",
       face: "🙂",
       color: "#5b6c3f",
       fact: "Leonardo was a painter AND an inventor. He painted very slowly and softly, so edges seem to melt like smoke.",
@@ -34,6 +35,7 @@ window.ARTISTS = {
     {
       id: "delacroix",
       name: "Eugène Delacroix",
+      last: "Delacroix",
       face: "🚩",
       color: "#1d3557",
       fact: "Delacroix loved bold colours and big, exciting action. His paintings feel like they're moving.",
@@ -45,6 +47,7 @@ window.ARTISTS = {
     {
       id: "gericault",
       name: "Théodore Géricault",
+      last: "Géricault",
       face: "🌊",
       color: "#52796f",
       fact: "Géricault painted enormous, dramatic scenes. He even visited real ships to get the waves just right.",
@@ -56,6 +59,7 @@ window.ARTISTS = {
     {
       id: "david",
       name: "Jacques-Louis David",
+      last: "David",
       face: "👑",
       color: "#7b1e2b",
       fact: "David painted grand, important moments with lots of people, gold and fancy clothes.",
@@ -67,6 +71,7 @@ window.ARTISTS = {
     {
       id: "veronese",
       name: "Paolo Veronese",
+      last: "Veronese",
       face: "🍇",
       color: "#3d5a80",
       fact: "Veronese painted the BIGGEST painting in the whole museum, packed with music, food and friends.",
@@ -78,6 +83,7 @@ window.ARTISTS = {
     {
       id: "vermeer",
       name: "Johannes Vermeer",
+      last: "Vermeer",
       face: "🧵",
       color: "#e9c46a",
       fact: "Vermeer painted small, quiet pictures of everyday life, with beautiful soft light.",
@@ -91,6 +97,7 @@ window.ARTISTS = {
     {
       id: "ingres",
       name: "J.-A.-D. Ingres",
+      last: "Ingres",
       face: "🪶",
       color: "#6d597a",
       fact: "Ingres loved smooth, curvy lines and made his paintings look soft as silk.",
@@ -100,8 +107,27 @@ window.ARTISTS = {
       ],
     },
     {
+      id: "arcimboldo",
+      name: "Giuseppe Arcimboldo",
+      last: "Arcimboldo",
+      face: "🥕",
+      color: "#6a994e",
+      fact: "Arcimboldo painted funny faces made entirely of fruit, flowers, vegetables and twigs. Look closely — every nose, cheek and ear is something you can eat or grow!",
+      works: [
+        { id: "arcimboldo-spring", title: "Spring", icon: "🌸", color: "#e07a9c",
+          fact: "A face made of pink and white flowers — petals for cheeks and a flower-bud nose." },
+        { id: "arcimboldo-summer", title: "Summer", icon: "🍑", color: "#e9a000",
+          fact: "Cheeks of peaches and cherries, an ear of corn, and a coat of golden wheat." },
+        { id: "arcimboldo-autumn", title: "Autumn", icon: "🍇", color: "#b5651d",
+          fact: "Grapes for hair, a pear for a nose, and a big pumpkin — the autumn harvest!" },
+        { id: "arcimboldo-winter", title: "Winter", icon: "🌳", color: "#5e503f",
+          fact: "An old gnarled tree-trunk face, with ivy hair and a lemon and orange hanging down." },
+      ],
+    },
+    {
       id: "statues",
       name: "Famous Statues",
+      last: "Statues",
       face: "🏛️",
       color: "#b8b3a7",
       fact: "Some of the Louvre's most famous treasures are statues — and the oldest are so old that nobody knows who made them!",

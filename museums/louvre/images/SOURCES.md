@@ -24,6 +24,10 @@ shows a coloured emoji placeholder and the hunt still works fine.
 | `lacemaker` | The Lacemaker | Johannes Vermeer | both | PD |
 | `astronomer` | The Astronomer | Johannes Vermeer | learn | PD |
 | `grande-odalisque` | La Grande Odalisque | J.-A.-D. Ingres | both | PD |
+| `arcimboldo-spring` | Spring (The Four Seasons, 1573) | Giuseppe Arcimboldo | learn | PD |
+| `arcimboldo-summer` | Summer (The Four Seasons, 1573) | Giuseppe Arcimboldo | both | PD |
+| `arcimboldo-autumn` | Autumn (The Four Seasons, 1573) | Giuseppe Arcimboldo | learn | PD |
+| `arcimboldo-winter` | Winter (The Four Seasons, 1573) | Giuseppe Arcimboldo | learn | PD |
 | `venus-de-milo` | Venus de Milo | unknown (ancient Greek) | both | PD sculpture; freely-licensed photo |
 | `winged-victory` | Winged Victory of Samothrace | unknown (ancient Greek) | both | PD sculpture; freely-licensed photo |
 | `psyche-cupid` | Psyche Revived by Cupid's Kiss | Antonio Canova | both | PD sculpture; freely-licensed photo |
