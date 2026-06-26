@@ -6,10 +6,10 @@ image:
   ("commons", "File Name.jpg")      -> a specific Wikimedia Commons file
   ("title", lang, "Article Title")  -> the article's main image (pageimages API)
 
-We try the hand-verified, Orsay-accurate Commons file first, then fall back to
-resolving by Wikipedia article title — so a single renamed/wrong filename no
-longer silently drops a painting to its emoji placeholder (the bug that left
-many cards blank). Writes museums/orsay/images/<id>.jpg.
+We try the hand-verified Commons file first, then fall back to resolving by
+Wikipedia article title — so a single renamed/wrong filename no longer silently
+drops a painting to its emoji placeholder (the bug that left many cards blank).
+Writes <museum>/images/<id>.jpg for every collection below (Orsay + Louvre).
 
 Stdlib only. Per-artwork failures are reported but never abort the run, so the
 deploy still succeeds. Run on a machine with internet (CI does this on deploy):
@@ -24,7 +24,8 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-DEST = ROOT / "museums" / "orsay" / "images"
+ORSAY_DEST = ROOT / "museums" / "orsay" / "images"
+LOUVRE_DEST = ROOT / "museums" / "louvre" / "images"
 THUMB = 900  # px wide — sharp on phones, keeps the offline bundle reasonable
 UA = ("orsay-can-you-see/1.0 "
       "(https://github.com/ahorning/orsay-can-you-see; educational kids project)")
@@ -124,6 +125,55 @@ ARTWORKS = {
         ("title", "fr", "Le Chat blanc")],
 }
 
+# Louvre artworks. Commons filenames verified to resolve; the title resolver is
+# the robust fallback. The famous statues use freely-licensed photos of the
+# (public-domain) sculptures. The glass pyramid is intentionally absent — modern
+# architecture, so that card keeps its 🔺 emoji placeholder.
+LOUVRE_ARTWORKS = {
+    "mona-lisa": [
+        ("commons", "Mona Lisa, by Leonardo da Vinci, from C2RMF retouched.jpg"),
+        ("title", "en", "Mona Lisa")],
+    "virgin-st-anne": [
+        ("commons", "Leonardo da Vinci - Virgin and Child with St Anne C2RMF retouched.jpg"),
+        ("title", "en", "The Virgin and Child with Saint Anne (Leonardo)")],
+    "liberty": [
+        ("commons", "Eugène Delacroix - Le 28 Juillet. La Liberté guidant le peuple.jpg"),
+        ("title", "en", "Liberty Leading the People")],
+    "raft-medusa": [
+        ("commons", "JEAN LOUIS THÉODORE GÉRICAULT - La Balsa de la Medusa (Museo del Louvre, 1818-19).jpg"),
+        ("title", "en", "The Raft of the Medusa")],
+    "coronation-napoleon": [
+        ("commons", "Jacques-Louis David, The Coronation of Napoleon edit.jpg"),
+        ("title", "en", "The Coronation of Napoleon")],
+    "wedding-cana": [
+        ("commons", "Paolo Veronese 008.jpg"),
+        ("title", "en", "The Wedding at Cana (Veronese)")],
+    "lacemaker": [
+        ("commons", "Johannes Vermeer - The lacemaker (c.1669-1671).jpg"),
+        ("title", "en", "The Lacemaker")],
+    "astronomer": [
+        ("commons", "Johannes Vermeer - The Astronomer - WGA24685.jpg"),
+        ("title", "en", "The Astronomer (Vermeer)")],
+    "grande-odalisque": [
+        ("commons", "Jean Auguste Dominique Ingres, La Grande Odalisque, 1814.jpg"),
+        ("title", "en", "Grande Odalisque")],
+    "venus-de-milo": [
+        ("commons", "Venus de Milo Louvre Ma399 n4.jpg"),
+        ("title", "en", "Venus de Milo")],
+    "winged-victory": [
+        ("commons", "Nike of Samothrake Louvre Ma2369 n4.jpg"),
+        ("title", "en", "Winged Victory of Samothrace")],
+    "psyche-cupid": [
+        ("commons", "Psyché ranimée par le baiser de l'Amour, Louvre.jpg"),
+        ("title", "en", "Psyche Revived by Cupid's Kiss")],
+}
+
+# Each collection -> where its <id>.jpg files are written.
+COLLECTIONS = [
+    (ORSAY_DEST, ARTWORKS),
+    (LOUVRE_DEST, LOUVRE_ARTWORKS),
+]
+
 
 def http_get(url: str) -> bytes:
     req = urllib.request.Request(url, headers={"User-Agent": UA})
@@ -170,7 +220,7 @@ def looks_like_image(data: bytes) -> bool:
     return data[:3] == b"\xff\xd8\xff" or data[:8] == b"\x89PNG\r\n\x1a\n"
 
 
-def fetch(item_id: str, resolvers) -> bool:
+def fetch(item_id: str, resolvers, dest: Path) -> bool:
     for resolver in resolvers:
         try:
             url = image_url(resolver)
@@ -179,7 +229,7 @@ def fetch(item_id: str, resolvers) -> bool:
             data = http_get(url)
             if not looks_like_image(data):
                 continue
-            (DEST / f"{item_id}.jpg").write_bytes(data)
+            (dest / f"{item_id}.jpg").write_bytes(data)
             print(f"  ok  {item_id}  ({len(data) // 1024} KB, via {resolver[0]})")
             return True
         except Exception as exc:  # network/HTTP/parse — try the next resolver
@@ -188,16 +238,16 @@ def fetch(item_id: str, resolvers) -> bool:
 
 
 def main() -> int:
-    DEST.mkdir(parents=True, exist_ok=True)
-    failed = []
-    for item_id, resolvers in ARTWORKS.items():
-        if not fetch(item_id, resolvers):
-            print(f"  --  {item_id}  (no image — will use placeholder)")
-            failed.append(item_id)
-    total = len(ARTWORKS)
-    print(f"\nDownloaded {total - len(failed)} / {total} images.")
-    if failed:
-        print("Missing (placeholders used): " + ", ".join(failed))
+    total = failed = 0
+    for dest, artworks in COLLECTIONS:
+        dest.mkdir(parents=True, exist_ok=True)
+        print(f"→ {dest.relative_to(ROOT)}")
+        for item_id, resolvers in artworks.items():
+            total += 1
+            if not fetch(item_id, resolvers, dest):
+                print(f"  --  {item_id}  (no image — will use placeholder)")
+                failed += 1
+    print(f"\nDownloaded {total - failed} / {total} images.")
     return 0  # never fail the build over a missing picture
 
 
