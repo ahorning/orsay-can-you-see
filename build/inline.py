@@ -27,8 +27,9 @@ mimetypes.add_type("image/svg+xml", ".svg")  # not registered on every platform
 
 ROOT = Path(__file__).resolve().parent.parent
 ORSAY = ROOT / "museums" / "orsay"
+LOUVRE = ROOT / "museums" / "louvre"
 PARIS = ROOT / "cities" / "paris"
-IMAGE_DIRS = [ORSAY / "images", PARIS / "images"]
+IMAGE_DIRS = [ORSAY / "images", LOUVRE / "images", PARIS / "images"]
 PWA = ROOT / "pwa"
 DIST = ROOT / "dist"
 
@@ -62,6 +63,8 @@ def inject_pwa(html: str) -> str:
 PAGES = {
     ORSAY / "learn.html": "learn.html",
     ORSAY / "orsay.html": "orsay.html",
+    LOUVRE / "learn.html": "louvre-learn.html",
+    LOUVRE / "louvre.html": "louvre.html",
     PARIS / "paris.html": "paris.html",
 }
 
@@ -133,6 +136,10 @@ def build_index() -> None:
     """Landing page with links pointing at the bundled siblings in dist/."""
     html = read(ROOT / "index.html")
     # The bundled pages sit flat in dist/, so flatten the source links.
+    # Louvre first: its learn.html must map to louvre-learn.html before the
+    # bare "museums/orsay/" → "" rule could turn it into "learn.html".
+    html = html.replace("museums/louvre/louvre.html", "louvre.html")
+    html = html.replace("museums/louvre/learn.html", "louvre-learn.html")
     html = html.replace("museums/orsay/", "")
     html = html.replace("cities/paris/", "")
     html = inject_pwa(html)
@@ -157,8 +164,11 @@ def build() -> None:
     copy_pwa_assets()
 
     have = len(images)
-    ids = set(re.findall(r'id:\s*"([^"]+)"', read(ORSAY / "data.js")))
-    ids |= set(re.findall(r'id:\s*"([^"]+)"', read(ORSAY / "artists.js")))
+    ids = set()
+    for data_file in (ORSAY / "data.js", ORSAY / "artists.js",
+                      LOUVRE / "data.js", LOUVRE / "artists.js"):
+        if data_file.exists():
+            ids |= set(re.findall(r'id:\s*"([^"]+)"', read(data_file)))
     print(f"\nReal photos inlined: {have} / {len(ids)} artworks "
           f"(placeholders used for the rest)")
     if have < len(ids):

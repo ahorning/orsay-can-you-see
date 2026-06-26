@@ -1,22 +1,34 @@
 # orsay-can-you-see
 
-A toddler scavenger hunt through Paris — starting with **"Orsay, Can You See?"**,
-an *I-spy* art adventure for a young child at the Musée d'Orsay. 🔎🖼️
+A toddler scavenger hunt through Paris — *I-spy* art adventures for a young child
+at the **Musée d'Orsay** and the **Louvre**, plus a city-wide Paris hunt. 🔎🖼️
+
+### ▶️ [Play it here »](https://ahorning.github.io/orsay-can-you-see/)
 
 Standing in the museum, your little art detective hunts for famous paintings (and
 the giant station clock!), taps a card when she spots it on the wall, and earns a
 star + confetti. Big tappable cards, bright colours, a "fun fact" for each
 artist, and a progress bar — all designed to be read aloud to a 4-year-old.
 
-There are three activities so far:
+There are several activities so far:
 
 - **🎨 Learn Before We Go** — a study gallery grouped by artist, plus a
-  *guess-the-artist* quiz to play at home before the trip, so the paintings feel
-  like old friends by the time you arrive.
-- **🖼️ Orsay, Can You See?** — the in-museum scavenger hunt.
+  *guess-the-artist* quiz to play at home before the trip, so the artworks feel
+  like old friends by the time you arrive (one edition for the Orsay, one for the
+  Louvre).
+- **🖼️ Orsay, Can You See?** — the in-museum scavenger hunt for the Musée d'Orsay.
+- **🏛️ Louvre, Can You See?** — the same hunt for the Louvre (the Mona Lisa, the
+  Venus de Milo, the Winged Victory, the glass pyramid…).
 - **🗼 Have You Seine It?** — a city-wide Paris hunt (the Eiffel Tower, a boat on
   the Seine, a green Wallace fountain, a baguette…) for spotting things out and
   about town.
+
+> **Why do the Orsay and Louvre share no artists?** The Musée d'Orsay was created
+> to hold France's 1848–1914 art — the Impressionists and Post-Impressionists
+> (Monet, Van Gogh, Degas, Renoir, Gauguin, Cézanne). The Louvre's collection
+> stops just before that, so the two never overlap. The Louvre edition features
+> its own icons: Leonardo, Delacroix, Géricault, David, Veronese, Vermeer,
+> Ingres, and famous statues like the Venus de Milo and the Winged Victory.
 
 ## Use it on your phone (works fully offline)
 
@@ -88,6 +100,7 @@ museums/orsay/data.js      ← edit this to change the Orsay hunt content
 museums/orsay/learn.html   The "learn before we go" page
 museums/orsay/artists.js   ← edit this to change the artists/paintings
 museums/orsay/images/      Public-domain painting photos
+museums/louvre/            Louvre hunt + learn pages, data.js, artists.js, images/
 cities/paris/paris.html    The "Have You Seine It?" Paris hunt page
 cities/paris/data.js       ← edit this to change the Paris hunt content
 cities/paris/images/       Optional photos for the photo-friendly Paris cards
@@ -104,7 +117,7 @@ dist/                      The single-file, offline, phone-ready builds
 - 🔊 **Tap-to-hear narration** so she can play it solo (the code already has a
   seam for the browser's text-to-speech — flip `CYS.NARRATION` in
   `shared/common.js`).
-- 🏛️ **More museums** (the Louvre, the Pompidou) reusing the same engine.
+- 🏛️ **More museums** (the Pompidou, and beyond) reusing the same engine.
 - 📸 **Photos for the Paris hunt** — its less-familiar cards (the métro sign, a
   Wallace fountain) can each show a photo; drop one at `cities/paris/images/`.
 - 🗼 **More city adventures** — the Paris hunt is built; more cities/neighbourhoods
