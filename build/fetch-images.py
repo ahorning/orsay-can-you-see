@@ -166,6 +166,19 @@ LOUVRE_ARTWORKS = {
     "psyche-cupid": [
         ("commons", "Psyché ranimée par le baiser de l'Amour, Louvre.jpg"),
         ("title", "en", "Psyche Revived by Cupid's Kiss")],
+    # Arcimboldo — the 1573 "Four Seasons" set, all in the Louvre.
+    "arcimboldo-spring": [
+        ("commons", "Giuseppe Arcimboldo - Spring, 1573.jpg"),
+        ("title", "en", "Spring (Arcimboldo)")],
+    "arcimboldo-summer": [
+        ("commons", "Giuseppe Arcimboldo - Summer - Google Art Project.jpg"),
+        ("title", "en", "Summer (Arcimboldo)")],
+    "arcimboldo-autumn": [
+        ("commons", "Giuseppe Arcimboldo - Autumn, 1573.jpg"),
+        ("title", "en", "Autumn (Arcimboldo)")],
+    "arcimboldo-winter": [
+        ("commons", "Giuseppe Arcimboldo - Winter, 1573.jpg"),
+        ("title", "en", "Winter (Arcimboldo)")],
 }
 
 # Each collection -> where its <id>.jpg files are written.
